@@ -1,4 +1,4 @@
-import generateId from './id.js';
+import { generateId } from './id.js';
 
 let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
     //Private
