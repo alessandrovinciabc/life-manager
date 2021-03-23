@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+import generateId from './id.js';
 
 let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
     //Private
-    let _id = uuidv4(),
+    let _id = generateId(),
         _title = title,
         _priority = priority,
         _dueDate = dueDate,
@@ -78,3 +78,5 @@ let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
         }
     );
 };
+
+export { createTodo };
