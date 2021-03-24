@@ -56,6 +56,32 @@ let createMonth = (value) => {
     };
 };
 
+let createDayMonth = (day, month) => {
+    let newMonth, monthIndex, maxForADay;
+
+    maxForADay = 31;
+    newMonth = createMonth(month).value;
+    monthIndex = Months.indexOf(newMonth);
+
+    if (monthIndex % 2 === 0) {
+        //31-day month
+    } else if (monthIndex === 1) {
+        maxForADay = 29;
+        //February - 29 is a valid day here
+    } else {
+        maxForADay = 28;
+        //The max value for a day becomes 28 here
+    }
+
+    return {
+        type: 'daymonth',
+        value: {
+            day: 'PLACEHOLDER',
+            month: newMonth,
+        },
+    };
+};
+
 let createDate = (type, value) => {
     switch (type) {
         case 'day':
@@ -70,4 +96,7 @@ let createDate = (type, value) => {
 //Dates
 //
 //Type: day/month/numday+month/day+month+year
+//day, month and daymonth types are always recurring
 //Value: X
+
+//todo: 29th of feb. should be valid for daymonth types

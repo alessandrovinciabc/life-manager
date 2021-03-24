@@ -57,15 +57,6 @@ let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
                 //
             },
 
-            //Recurring
-            get recurring() {
-                return _recurring;
-            },
-            toggleRecurrency() {
-                _recurring = _recurring === false ? true : false;
-                return _recurring;
-            },
-
             //Checked
             get isChecked() {
                 return _checked;
