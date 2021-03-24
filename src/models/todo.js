@@ -1,6 +1,6 @@
 import { generateId } from './id.js';
 
-let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
+let createTodo = (title, priority = 0, dueDate = 0) => {
     //Private
     let _id = generateId(),
         _title = title,
@@ -50,11 +50,13 @@ let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
                 return _dueDate;
             },
             set dueDate(newDate) {
-                //To be filled...
-                //
-                //
-                //
-                //
+                if (
+                    typeof newDate === 'object' &&
+                    newDate.hasOwnProperty('type')
+                    //Must check if date is valid...
+                    //Todo: implement in date.js
+                ) {
+                }
             },
 
             //Checked

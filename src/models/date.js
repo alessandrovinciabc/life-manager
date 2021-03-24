@@ -26,6 +26,40 @@ const Months = [
 ];
 Object.freeze(Months);
 
+let isDayValid = (obj) => {
+    let indexOfDay,
+        isValid = false;
+
+    if (
+        obj.hasOwnProperty('type') &&
+        obj.type === 'day' &&
+        obj.hasOwnProperty('value')
+    ) {
+        indexOfDay = lookupDictionary(obj.value, Days, 3);
+        isValid = indexOfDay === -1 ? false : true;
+    }
+
+    return isValid;
+};
+
+let isMonthValid = (obj) => {
+    let indexOfMonth,
+        isValid = false;
+
+    if (
+        obj.hasOwnProperty('type') &&
+        obj.type === 'month' &&
+        obj.hasOwnProperty('value')
+    ) {
+        indexOfMonth = lookupDictionary(obj.value, Months, 3);
+        isValid = indexOfMonth === -1 ? false : true;
+    }
+
+    return isValid;
+};
+
+let isDayMonthValid = (obj) => {};
+
 let createDay = (value) => {
     let indexOfDay = lookupDictionary(upperCaseFirst(value), Days, 3);
     const ERROR_MESSAGE = `Error: value is not a valid day.`;
