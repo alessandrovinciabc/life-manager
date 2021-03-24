@@ -58,7 +58,52 @@ let isMonthValid = (obj) => {
     return isValid;
 };
 
-let isDayMonthValid = (obj) => {};
+let isDayMonthValid = (obj) => {
+    let month,
+        monthIndex,
+        maxForADay,
+        isValidDay = false,
+        isValidDayMonthObj,
+        isValidMonth = true;
+
+    isValidDayMonthObj =
+        typeof obj === 'object' &&
+        obj.hasOwnProperty('type') &&
+        obj.type === 'daymonth' &&
+        obj.hasOwnProperty('value') &&
+        obj.value.hasOwnProperty('day') &&
+        obj.value.hasOwnProperty('month');
+
+    if (isValidDayMonthObj) {
+        maxForADay = 31;
+        month = obj.value.month;
+        monthIndex = Months.indexOf(month);
+
+        if (monthIndex === -1) {
+            isValidMonth = false;
+        } else if (monthIndex % 2 === 0) {
+            //31-day month
+        } else if (monthIndex === 1) {
+            //February - 29 is a valid day here
+            maxForADay = 29;
+        } else {
+            //The max value for a day becomes 28 here
+            maxForADay = 28;
+        }
+
+        isValidDay =
+            typeof obj.day === 'number' &&
+            obj.day >= 1 &&
+            obj.day <= maxForADay;
+        if (isValidDay && isValidMonth) {
+            //It's a valid DayMonth Object.
+        } else {
+            isValidDayMonthObj = false;
+        }
+    }
+
+    return isValidDayMonthObj;
+};
 
 let createDay = (value) => {
     let indexOfDay = lookupDictionary(upperCaseFirst(value), Days, 3);
