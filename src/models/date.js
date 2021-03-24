@@ -1,5 +1,5 @@
 import { isValid, isPast } from 'date-fns';
-import { upperCaseFirst } from './strings.js';
+import { upperCaseFirst, lookupDictionary } from './strings.js';
 
 const Days = [
     'Monday', //0
@@ -26,66 +26,46 @@ const Months = [
 ];
 Object.freeze(Months);
 
-let lookupDictionary = (dictionary, upperBound, minLetters) => {};
-
 let createDay = (value) => {
-    let normalized = value,
-        finalIndex = -1;
+    let indexOfDay = lookupDictionary(upperCaseFirst(value), Days, 3);
+    const ERROR_MESSAGE = `Error: value is not a valid day.`;
 
-    const ERROR_MESSAGE =
-        'Error: a day must be either a value from 1 to 7, a string with no abbreviations or three letters format.';
-
-    if (typeof value === 'number' && value >= 1 && value <= 7) {
-        finalIndex = normalized - 1;
-    } else if (typeof value === 'string') {
-        if (value.length > 3) {
-            normalized = upperCaseFirst(normalized);
-
-            finalIndex = Days.indexOf(normalized);
-            if (finalIndex !== -1) {
-                //Day is valid
-            } else {
-                //Day is NOT valid
-                throw ERROR_MESSAGE;
-            }
-        } else if (value.length === 3) {
-            normalized = upperCaseFirst(normalized);
-            Days.forEach((day, index) => {
-                if (day.startsWith(normalized)) {
-                    finalIndex = index;
-                }
-            });
-
-            if (finalIndex === -1) {
-                //String was not a valid day
-                throw ERROR_MESSAGE;
-            }
-        } else {
-            //Invalid length for the string
-            throw ERROR_MESSAGE;
-        }
-    } else {
-        //NOT a string and NOT a number
+    if (indexOfDay === -1) {
+        //Error
         throw ERROR_MESSAGE;
     }
 
     return {
         type: 'day',
-        value: Days[finalIndex],
+        value: Days[indexOfDay],
     };
 };
 
 let createMonth = (value) => {
-    let newValue = value;
+    let indexOfMonth = lookupDictionary(upperCaseFirst(value), Months, 3);
+    const ERROR_MESSAGE = `Error: value is not a valid month.`;
 
-    if (typeof value === 'number' && value >= 1 && value <= 12) {
-        //All good
-    } else {
-        throw 'Error: a month must be a value from 1 to 12.';
+    if (indexOfMonth === -1) {
+        //Error
+        throw ERROR_MESSAGE;
     }
+
+    return {
+        type: 'month',
+        value: Months[indexOfMonth],
+    };
 };
 
-let createDate = (type, value) => {};
+let createDate = (type, value) => {
+    switch (type) {
+        case 'day':
+            createDay(value);
+            break;
+        case 'month':
+            createMonth(value);
+            break;
+    }
+};
 
 //Dates
 //

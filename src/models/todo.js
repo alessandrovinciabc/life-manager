@@ -6,7 +6,6 @@ let createTodo = (title, priority = 0, dueDate = 0, recurring = false) => {
         _title = title,
         _priority = priority,
         _dueDate = dueDate,
-        _recurring = recurring,
         _checked = false;
 
     //Public
