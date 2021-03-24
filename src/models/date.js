@@ -57,7 +57,7 @@ let createMonth = (value) => {
 };
 
 let createDayMonth = (day, month) => {
-    let newMonth, monthIndex, maxForADay;
+    let newDay, newMonth, monthIndex, maxForADay, dayIsValid;
 
     maxForADay = 31;
     newMonth = createMonth(month).value;
@@ -66,31 +66,45 @@ let createDayMonth = (day, month) => {
     if (monthIndex % 2 === 0) {
         //31-day month
     } else if (monthIndex === 1) {
-        maxForADay = 29;
         //February - 29 is a valid day here
+        maxForADay = 29;
     } else {
-        maxForADay = 28;
         //The max value for a day becomes 28 here
+        maxForADay = 28;
+    }
+
+    dayIsValid = typeof day === 'number' && day >= 1 && day <= maxForADay;
+
+    if (dayIsValid) {
+        newDay = day;
+    } else {
+        throw 'Error: invalid day provided.';
     }
 
     return {
         type: 'daymonth',
         value: {
-            day: 'PLACEHOLDER',
+            day: newDay,
             month: newMonth,
         },
     };
 };
 
-let createDate = (type, value) => {
+let createDate = (type, ...values) => {
+    let returnValue;
     switch (type) {
         case 'day':
-            createDay(value);
+            returnValue = createDay(values[0]);
             break;
         case 'month':
-            createMonth(value);
+            returnValue = createMonth(values[0]);
+            break;
+        case 'daymonth':
+            returnValue = createDayMonth(values[0], values[1]);
             break;
     }
+
+    return returnValue;
 };
 
 //Dates
