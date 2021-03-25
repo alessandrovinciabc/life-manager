@@ -2,6 +2,8 @@ import { createTodo } from './models/todo.js';
 import { createDate, isDateValid } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
+testTodo.dueDate = createDate('day', 3);
+console.log(testTodo.dueDate);
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}`;
 

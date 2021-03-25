@@ -243,7 +243,7 @@ let createFullDate = (day, month, year) => {
     if (!valuesAreInvalid) {
         dateObj = new Date(year, month - 1, day);
 
-        if (!isDateValid(dateObj)) {
+        if (!isDateObjectValid(dateObj)) {
             throw 'Error: invalid date.';
         }
     } else {

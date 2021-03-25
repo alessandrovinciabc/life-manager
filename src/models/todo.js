@@ -1,4 +1,5 @@
 import { generateId } from './id.js';
+import { isDateValid } from './date.js';
 
 let createTodo = (title, priority = 0, dueDate = 0) => {
     //Private
@@ -10,7 +11,6 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
 
     //Public
     return Object.assign(
-        {},
         {
             //Id
             get id() {
@@ -50,12 +50,10 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
                 return _dueDate;
             },
             set dueDate(newDate) {
-                if (
-                    typeof newDate === 'object' &&
-                    newDate.hasOwnProperty('type')
-                    //Must check if date is valid...
-                    //Todo: implement in date.js
-                ) {
+                if (isDateValid(newDate)) {
+                    _dueDate = newDate;
+                } else {
+                    throw 'Invalid date for todo.';
                 }
             },
 
@@ -67,7 +65,8 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
                 _checked = _checked === false ? true : false;
                 return _checked;
             },
-        }
+        },
+        {}
     );
 };
 
