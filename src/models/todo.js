@@ -43,7 +43,7 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
     //Public
     return Object.assign(
         {
-            //Id
+            //id
             get id() {
                 return _id;
             },
@@ -85,4 +85,6 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
     );
 };
 
-export { createTodo };
+let isValidTodo = (obj) => {};
+
+export { createTodo, isValidTodo };
