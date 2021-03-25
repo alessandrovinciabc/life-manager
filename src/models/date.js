@@ -28,6 +28,11 @@ const Months = [
 ];
 Object.freeze(Months);
 
+let isDateValid = (obj) => {
+    return isValid(obj);
+};
+
+//                              DATE OBJECTS VALIDATION
 let isDayValid = (obj) => {
     let indexOfDay,
         isValid = false;
@@ -107,6 +112,17 @@ let isDayMonthValid = (obj) => {
     return isValidDayMonthObj;
 };
 
+let isFullDateValid = (obj) => {
+    let isValid =
+        obj.hasOwnProperty('type') &&
+        obj.type === 'full' &&
+        obj.hasOwnProperty('value') &&
+        isDateValid(obj.value);
+
+    return isValid;
+};
+
+//                              DATE OBJECTS CREATION
 let createDay = (value) => {
     let normalized;
     if (typeof value === 'string') {
@@ -185,6 +201,28 @@ let createDayMonth = (day, month) => {
     };
 };
 
+let createFullDate = (day, month, year) => {
+    let valuesAreInvalid = [year, month, day].some(
+        (el) => typeof el !== 'number'
+    );
+    let dateObj;
+
+    if (!valuesAreInvalid) {
+        dateObj = new Date(year, month - 1, day);
+
+        if (!isDateValid(dateObj)) {
+            throw 'Error: invalid date.';
+        }
+    } else {
+        throw 'Error: invalid date.';
+    }
+
+    return {
+        type: 'full',
+        value: dateObj,
+    };
+};
+
 let createDate = (type, ...values) => {
     let returnValue;
     switch (type) {
@@ -197,12 +235,24 @@ let createDate = (type, ...values) => {
         case 'daymonth':
             returnValue = createDayMonth(values[0], values[1]);
             break;
+        case 'full':
+            returnValue = createFullDate(values[0], values[1], values[2]);
+            break;
+        default:
+            throw 'Invalid type provided for date creation. day|month|daymonth|full';
+            break;
     }
 
     return returnValue;
 };
 
-export { createDate, isDayValid, isMonthValid, isDayMonthValid };
+export {
+    createDate,
+    isDayValid,
+    isMonthValid,
+    isDayMonthValid,
+    isFullDateValid,
+};
 
 //Dates
 //

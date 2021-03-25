@@ -4,11 +4,17 @@ import {
     isDayValid,
     isMonthValid,
     isDayMonthValid,
+    isFullDateValid,
 } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}`;
+
+let testFull = createDate('full', 20, 5, 1999);
+console.log(testFull);
+console.log(isFullDateValid(testFull));
+
 let testDate = createDate('daymonth', 25, 'may');
 console.log(testDate);
 console.log(isDayMonthValid(testDate));
