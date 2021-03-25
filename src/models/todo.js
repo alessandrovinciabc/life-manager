@@ -1,13 +1,44 @@
 import { generateId } from './id.js';
 import { isDateValid } from './date.js';
 
+//dueDate = 0 means there's no date to the todo
 let createTodo = (title, priority = 0, dueDate = 0) => {
     //Private
-    let _id = generateId(),
-        _title = title,
-        _priority = priority,
-        _dueDate = dueDate,
-        _checked = false;
+    let _id, _title, _priority, _dueDate, _checked;
+
+    let _validateTitle = (newTitle) => {
+        if (typeof newTitle === 'string' && newTitle.length <= 100) {
+            _title = newTitle;
+        } else {
+            throw 'Error: must assign a string that has a maximum of 100 characters as the title for a todo.';
+        }
+    };
+
+    let _validatePriority = (newPriority) => {
+        if (
+            typeof newPriority === 'number' &&
+            newPriority >= 0 &&
+            newPriority <= 3
+        ) {
+            _priority = newPriority;
+        } else {
+            throw 'Error: must assign a number between 0 and 3 as the priority value for a todo.';
+        }
+    };
+
+    let _validateDueDate = (newDate) => {
+        if (isDateValid(newDate) || newDate === 0) {
+            _dueDate = newDate;
+        } else {
+            throw 'Invalid date for todo.';
+        }
+    };
+
+    _id = generateId();
+    _title = _validateTitle(title);
+    _priority = _validatePriority(priority);
+    _dueDate = _validateDueDate(dueDate);
+    _checked = false;
 
     //Public
     return Object.assign(
@@ -22,11 +53,7 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
                 return _title;
             },
             set title(newTitle) {
-                if (typeof newTitle === 'string' && newTitle.length <= 100) {
-                    _title = newTitle;
-                } else {
-                    throw 'Error: must assign a string that has a maximum of 100 characters as the title for a todo.';
-                }
+                _validateTitle(newTitle);
             },
 
             //Priority
@@ -34,15 +61,7 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
                 return _priority;
             },
             set priority(newPriority) {
-                if (
-                    typeof newPriority === 'number' &&
-                    newPriority >= 0 &&
-                    newPriority <= 3
-                ) {
-                    _priority = newPriority;
-                } else {
-                    throw 'Error: must assign a number between 0 and 3 as the priority value for a todo.';
-                }
+                _validatePriority(newPriority);
             },
 
             //Due date
@@ -50,11 +69,7 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
                 return _dueDate;
             },
             set dueDate(newDate) {
-                if (isDateValid(newDate)) {
-                    _dueDate = newDate;
-                } else {
-                    throw 'Invalid date for todo.';
-                }
+                _validateDueDate(newDate);
             },
 
             //Checked
