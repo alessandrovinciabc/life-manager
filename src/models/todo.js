@@ -85,6 +85,14 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
     );
 };
 
-let isValidTodo = (obj) => {};
+let isValidTodo = (obj) => {
+    let result = true;
+    try {
+        createTodo(obj.title, obj.priority, obj.dueDate);
+    } catch (err) {
+        result = false;
+    }
+    return result;
+};
 
 export { createTodo, isValidTodo };
