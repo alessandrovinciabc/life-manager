@@ -21,7 +21,7 @@ let lookupDictionary = (value, dictionary, minLetters = 0) => {
         finalIndex = value - 1;
     } else if (typeof value === 'string') {
         if (value.length > minLetters) {
-            finalIndex = Days.indexOf(value);
+            finalIndex = dictionary.indexOf(value);
             if (finalIndex !== -1) {
                 //Entry is valid
             } else {

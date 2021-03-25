@@ -14,7 +14,7 @@ Object.freeze(Days);
 
 const Months = [
     'January', //0
-    'Febraury',
+    'February',
     'March',
     'April',
     'May',
@@ -22,7 +22,9 @@ const Months = [
     'July',
     'August',
     'September',
-    'November', //11
+    'October',
+    'November',
+    'December', //11
 ];
 Object.freeze(Months);
 
@@ -92,9 +94,9 @@ let isDayMonthValid = (obj) => {
         }
 
         isValidDay =
-            typeof obj.day === 'number' &&
-            obj.day >= 1 &&
-            obj.day <= maxForADay;
+            typeof obj.value.day === 'number' &&
+            obj.value.day >= 1 &&
+            obj.value.day <= maxForADay;
         if (isValidDay && isValidMonth) {
             //It's a valid DayMonth Object.
         } else {
@@ -106,7 +108,14 @@ let isDayMonthValid = (obj) => {
 };
 
 let createDay = (value) => {
-    let indexOfDay = lookupDictionary(upperCaseFirst(value), Days, 3);
+    let normalized;
+    if (typeof value === 'string') {
+        normalized = upperCaseFirst(value);
+    } else if (typeof value === 'number') {
+        normalized = value;
+    }
+
+    let indexOfDay = lookupDictionary(normalized, Days, 3);
     const ERROR_MESSAGE = `Error: value is not a valid day.`;
 
     if (indexOfDay === -1) {
@@ -121,7 +130,14 @@ let createDay = (value) => {
 };
 
 let createMonth = (value) => {
-    let indexOfMonth = lookupDictionary(upperCaseFirst(value), Months, 3);
+    let normalized;
+    if (typeof value === 'string') {
+        normalized = upperCaseFirst(value);
+    } else if (typeof value === 'number') {
+        normalized = value;
+    }
+
+    let indexOfMonth = lookupDictionary(normalized, Months, 3);
     const ERROR_MESSAGE = `Error: value is not a valid month.`;
 
     if (indexOfMonth === -1) {
@@ -185,6 +201,8 @@ let createDate = (type, ...values) => {
 
     return returnValue;
 };
+
+export { createDate, isDayValid, isMonthValid, isDayMonthValid };
 
 //Dates
 //
