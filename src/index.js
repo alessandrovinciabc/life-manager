@@ -3,15 +3,13 @@ import { createDate, isDateValid } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
 testTodo.dueDate = createDate('day', 3);
-console.log(testTodo.dueDate);
 
 let testTodo2 = createTodo(
-    'Eat an apple. And then another one. And then another one. And then another. And then maybe... another one? Really cool! Amazing! Stunning! Beautiful!'
+    'Eat an apple. And then another one. And then another one. And then another. And then maybe... fuuunf'
 );
 testTodo2.dueDate = createDate('day', 7);
-console.log(testTodo2.dueDate);
 
-document.body.innerText = `${testTodo.id}\n${testTodo.title}`;
+document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
 
 let testFull = createDate('full', 20, 5, 1999);
 console.log(testFull);

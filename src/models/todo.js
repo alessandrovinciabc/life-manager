@@ -35,9 +35,9 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
     };
 
     _id = generateId();
-    _title = _validateTitle(title);
-    _priority = _validatePriority(priority);
-    _dueDate = _validateDueDate(dueDate);
+    _validateTitle(title);
+    _validatePriority(priority);
+    _validateDueDate(dueDate);
     _checked = false;
 
     //Public
@@ -73,7 +73,7 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
             },
 
             //Checked
-            get isChecked() {
+            get checked() {
                 return _checked;
             },
             toggleCheck() {
