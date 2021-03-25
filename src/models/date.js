@@ -28,7 +28,7 @@ const Months = [
 ];
 Object.freeze(Months);
 
-let isDateValid = (obj) => {
+let isDateObjectValid = (obj) => {
     return isValid(obj);
 };
 
@@ -117,9 +117,42 @@ let isFullDateValid = (obj) => {
         obj.hasOwnProperty('type') &&
         obj.type === 'full' &&
         obj.hasOwnProperty('value') &&
-        isDateValid(obj.value);
+        isDateObjectValid(obj.value);
 
     return isValid;
+};
+
+//Combines all other validation functions into one
+//This only will be exported
+let isDateValid = (obj) => {
+    const ValidTypes = ['day', 'month', 'daymonth', 'full'];
+    let formatIsValid,
+        result = false;
+
+    formatIsValid =
+        typeof obj === 'object' &&
+        obj.hasOwnProperty('type') &&
+        ValidTypes.includes(obj.type) &&
+        obj.hasOwnProperty('value');
+
+    if (formatIsValid) {
+        switch (obj.type) {
+            case 'day':
+                result = isDayValid(obj);
+                break;
+            case 'month':
+                result = isMonthValid(obj);
+                break;
+            case 'daymonth':
+                result = isDayMonthValid(obj);
+                break;
+            case 'full':
+                result = isFullDateValid(obj);
+                break;
+        }
+    }
+
+    return result;
 };
 
 //                              DATE OBJECTS CREATION
@@ -246,13 +279,7 @@ let createDate = (type, ...values) => {
     return returnValue;
 };
 
-export {
-    createDate,
-    isDayValid,
-    isMonthValid,
-    isDayMonthValid,
-    isFullDateValid,
-};
+export { createDate, isDateValid };
 
 //Dates
 //
