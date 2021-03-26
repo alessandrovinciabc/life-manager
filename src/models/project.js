@@ -27,7 +27,18 @@ let createProject = (title, color) => {
     _id = generateId();
     _title = _validateTitle(title);
     _color = _validateColor(color);
-    _collection = [];
+    _collection = {
+        default: [
+            /*todos without a label*/
+        ],
+        custom: [
+            {
+                /*id: ..., title: ..., todos: []*/
+            },
+            {},
+            {},
+        ] /*todos from labels*/,
+    };
 
     return Object.assign({
         //id
@@ -49,8 +60,49 @@ let createProject = (title, color) => {
             _validateColor(newColor);
         },
         //Collection
+        getCollection() {},
+        label: {
+            add() {},
+            remove() {},
+            get() {},
+        },
+        todo: {
+            add(todoObj, list = 0) {
+                if (isValidTodo(todoObj)) {
+                    if (list === 0) {
+                        _collection.default.push(todoObj);
+                    }
+                }
+            },
+            remove(id, list = 0) {
+                let found;
+                if (list === 0) {
+                    found = _collection.default.findIndex((el) => el.id === id);
+                    if (found !== -1) {
+                        _collection.default.splice(found, 1);
+                    }
+                }
+            },
+            get() {},
+        },
+        sortBy(rule) {
+            //priority - dueDate
+        },
+        debug: {
+            getAll() {
+                return _collection;
+            },
+        },
     });
 };
 
+let exampleCollection = [
+    [], //this one is reserved and is the default spot for all todos without a category
+    { label: 'Getting leads', todos: [] },
+    { label: 'Skill development', todos: [] },
+];
+
+export { createProject };
+
 //Projects can have "labels" inside them to group activities together
-//There must be a "Inbox" which will be the default "project" where todos will be put
+//There must be an "Inbox" which will be the default "project" where todos will be put
