@@ -99,11 +99,24 @@ let createProject = (title, color) => {
         },
         todo: {
             add(todoObj, list = 0) {
+                let foundList,
+                    returnValue = false;
+
                 if (isValidTodo(todoObj)) {
                     if (list === 0) {
                         _collection.default.push(todoObj);
+                    } else {
+                        foundList = _collection.custom.finIndex(
+                            (el) => el.id === list
+                        );
+                        if (foundList !== -1) {
+                            _collection.custom[foundList].todos.push(todoObj);
+                            returnValue = true;
+                        }
                     }
                 }
+
+                return returnValue;
             },
             remove(id, list = 0) {
                 let found,
@@ -114,39 +127,68 @@ let createProject = (title, color) => {
                         _collection.default.splice(found, 1);
                         returnValue = true;
                     }
+                } else {
+                    let foundList = _collection.custom.findIndex(
+                        (el) => el.id === list
+                    );
+                    if (foundList !== -1) {
+                        let todoArray, indexToDelete;
+                        todoArray = _collection.custom[foundList].todos;
+                        indexToDelete = todos.findIndex((el) => el.id === id);
+                        if (indexToDelete !== -1) {
+                            returnValue = true;
+                            todoArray.splice(indexToDelete, 1);
+                        }
+                    }
                 }
 
                 return returnValue;
             },
             get(id, list = 0) {
                 let found,
+                    foundList,
                     returnValue = -1;
                 if (list === 0) {
                     found = _collection.default.findIndex((el) => el.id === id);
                     if (found !== -1) {
                         returnValue = _collection.default[found];
                     }
+                } else {
+                    foundList = _collection.custom.findIndex(
+                        (el) => el.id === list
+                    );
+                    if (foundList !== -1) {
+                        found = _collection.custom[foundList].todos.findIndex(
+                            (el) => el.id === id
+                        );
+                        if (found !== -1) {
+                            returnValue =
+                                _collection.custom[foundList].todos[found];
+                        }
+                    }
                 }
 
                 return returnValue;
             },
             getAll(list = 0) {
-                let returnValue;
+                let foundList, returnValue;
                 if (list === 0) {
                     returnValue = _collection.default;
+                } else {
+                    foundList = _collection.custom.finIndex(
+                        (el) => el.id === list
+                    );
+                    if (foundList !== -1) {
+                        returnValue = _collection.custom[foundList].todos;
+                    }
                 }
 
                 return returnValue;
             },
+            move(id, destinationList) {},
         },
     });
 };
-
-let exampleCollection = [
-    [], //this one is reserved and is the default spot for all todos without a category
-    { label: 'Getting leads', todos: [] },
-    { label: 'Skill development', todos: [] },
-];
 
 export { createProject };
 

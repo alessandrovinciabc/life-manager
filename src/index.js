@@ -12,11 +12,13 @@ let newProject = createProject('Epic stuff', 'red');
 newProject.todo.add(testTodo);
 newProject.todo.add(createTodo('do this'));
 newProject.todo.add(createTodo('do that'));
+newProject.label.add('Epic label for epic stuff');
 
 console.log(
     newProject.todo.getAll().forEach((el) => {
         console.log(el.title);
-    })
+    }),
+    newProject.label.getAll()
 );
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
