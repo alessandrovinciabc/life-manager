@@ -4,6 +4,9 @@ import { createDate, isDateValid } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
 testTodo.dueDate = createDate('day', 7);
+console.log(testTodo.notes);
+testTodo.notes = 'this is a test';
+console.log(testTodo.notes);
 
 console.log(isValidTodo({ bananabread: 5, title: 666 }));
 console.log(isValidTodo(testTodo));

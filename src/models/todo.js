@@ -4,13 +4,23 @@ import { isDateValid } from './date.js';
 //dueDate = 0 means there's no date to the todo
 let createTodo = (title, priority = 0, dueDate = 0) => {
     //Private
-    let _id, _title, _priority, _dueDate, _checked;
+    let _id, _title, _priority, _dueDate, _checked, _notes;
+    const TITLE_LIMIT = 100;
+    const NOTE_LIMIT = 1024;
+
+    let _validateNote = (newNote) => {
+        if (typeof newNote === 'string' && newNote.length <= NOTE_LIMIT) {
+            _notes = newNote;
+        } else {
+            throw `Error: must assign a string that has a maximum of ${NOTE_LIMIT} characters as the 'notes' section for a todo.`;
+        }
+    };
 
     let _validateTitle = (newTitle) => {
-        if (typeof newTitle === 'string' && newTitle.length <= 100) {
+        if (typeof newTitle === 'string' && newTitle.length <= TITLE_LIMIT) {
             _title = newTitle;
         } else {
-            throw 'Error: must assign a string that has a maximum of 100 characters as the title for a todo.';
+            throw `Error: must assign a string that has a maximum of ${TITLE_LIMIT} characters as the title for a todo.`;
         }
     };
 
@@ -39,6 +49,7 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
     _validatePriority(priority);
     _validateDueDate(dueDate);
     _checked = false;
+    _notes = '';
 
     //Public
     return Object.assign(
@@ -79,6 +90,15 @@ let createTodo = (title, priority = 0, dueDate = 0) => {
             toggleCheck() {
                 _checked = _checked === false ? true : false;
                 return _checked;
+            },
+
+            //Notes
+            get notes() {
+                return _notes;
+            },
+
+            set notes(newNote) {
+                _validateNote(newNote);
             },
         },
         {}

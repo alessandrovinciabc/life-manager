@@ -6,6 +6,7 @@ const AvailableColors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple'];
 let createProject = (title, color) => {
     //Private
     let _id, _title, _color, _collection;
+
     let _validateTitle = (newTitle) => {
         let returnValue;
         if (typeof newTitle === 'string' && newTitle.length <= 100) {
@@ -51,6 +52,7 @@ let createProject = (title, color) => {
         return returnValue;
     };
 
+    //Public
     return Object.assign({
         //id
         get id() {
