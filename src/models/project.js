@@ -7,11 +7,14 @@ let createProject = (title, color) => {
     //Private
     let _id, _title, _color, _collection;
     let _validateTitle = (newTitle) => {
+        let returnValue;
         if (typeof newTitle === 'string' && newTitle.length <= 100) {
-            _title = newTitle;
+            returnValue = newTitle;
         } else {
-            throw 'Error: must assign a string that has a maximum of 100 characters as the title for a project.';
+            throw 'Error: must assign a string that has a maximum of 100 characters as the title for a project/label.';
         }
+
+        return returnValue;
     };
     let _validateColor = (newColor) => {
         if (
@@ -51,6 +54,7 @@ let createProject = (title, color) => {
         },
         set title(newTitle) {
             _validateTitle(newTitle);
+            _title = newTitle;
         },
         //Color
         get color() {
@@ -62,7 +66,9 @@ let createProject = (title, color) => {
         //Collection
         getCollection() {},
         label: {
-            add() {},
+            add(name) {
+                _validateTitle(name);
+            },
             remove() {},
             get() {},
         },
