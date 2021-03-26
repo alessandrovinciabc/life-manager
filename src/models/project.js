@@ -83,27 +83,36 @@ let createProject = (title, color) => {
                 _collection.custom.push(newLabel);
             },
             remove(id) {
-                let found;
+                let wasSuccesful = false;
 
-                found = _findIndex(id, _collection.custom, (res) => {
+                _findIndex(id, _collection.custom, (res) => {
                     _collection.custom.splice(found, 1);
+                    wasSuccesful = true;
                 });
 
-                return found !== -1 ? true : false;
+                return wasSuccesful;
             },
-            get(id) {
-                let found;
-
-                found = _findIndex(id, _collection.custom);
-
-                return found !== -1 ? _collection.custom[found] : -1;
+            rename(id, newTitle) {
+                let result = false;
+                _validateTitle(newTitle);
+                _findIndex(id, _collection.custom, (found) => {
+                    _collection.custom[found].label = newTitle;
+                    result = true;
+                });
+                return result;
             },
             getAll() {
-                let returnValue;
+                let composed;
 
-                returnValue = _collection.custom;
+                composed = _collection.custom.map((label) => {
+                    return {
+                        id: label.id,
+                        label: label.label,
+                        n: label.todos.length,
+                    };
+                });
 
-                return returnValue;
+                return composed;
             },
         },
         todo: {
