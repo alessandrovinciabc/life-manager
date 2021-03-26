@@ -34,13 +34,7 @@ let createProject = (title, color) => {
         default: [
             /*todos without a label*/
         ],
-        custom: [
-            {
-                /*id: ..., title: ..., todos: []*/
-            },
-            {},
-            {},
-        ] /*todos from labels*/,
+        custom: [] /*labelled groups*/,
     };
 
     return Object.assign({
@@ -64,13 +58,44 @@ let createProject = (title, color) => {
             _validateColor(newColor);
         },
         //Collection
-        getCollection() {},
         label: {
             add(name) {
-                _validateTitle(name);
+                let newLabel = {
+                    id: generateId(),
+                    label: _validateTitle(name),
+                    todos: [],
+                };
+
+                _collection.custom.push(newLabel);
             },
-            remove() {},
-            get() {},
+            remove(id) {
+                let found,
+                    returnValue = false;
+                found = _collection.custom.findIndex((el) => el.id === id);
+                if (found !== -1) {
+                    _collection.custom.splice(found, 1);
+                    returnValue = true;
+                }
+
+                return returnValue;
+            },
+            get(id) {
+                let found,
+                    returnValue = -1;
+                found = _collection.custom.findIndex((el) => el.id === id);
+                if (found !== -1) {
+                    returnValue = _collection.custom[found];
+                }
+
+                return returnValue;
+            },
+            getAll() {
+                let returnValue;
+
+                returnValue = _collection.custom;
+
+                return returnValue;
+            },
         },
         todo: {
             add(todoObj, list = 0) {
@@ -81,13 +106,17 @@ let createProject = (title, color) => {
                 }
             },
             remove(id, list = 0) {
-                let found;
+                let found,
+                    returnValue = false;
                 if (list === 0) {
                     found = _collection.default.findIndex((el) => el.id === id);
                     if (found !== -1) {
                         _collection.default.splice(found, 1);
+                        returnValue = true;
                     }
                 }
+
+                return returnValue;
             },
             get(id, list = 0) {
                 let found,
