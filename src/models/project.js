@@ -83,14 +83,25 @@ let createProject = (title, color) => {
                     }
                 }
             },
-            get() {},
-        },
-        sortBy(rule) {
-            //priority - dueDate
-        },
-        debug: {
-            getAll() {
-                return _collection;
+            get(id, list = 0) {
+                let found,
+                    returnValue = -1;
+                if (list === 0) {
+                    found = _collection.default.findIndex((el) => el.id === id);
+                    if (found !== -1) {
+                        returnValue = _collection.default[found];
+                    }
+                }
+
+                return returnValue;
+            },
+            getAll(list = 0) {
+                let returnValue;
+                if (list === 0) {
+                    returnValue = _collection.default;
+                }
+
+                return returnValue;
             },
         },
     });

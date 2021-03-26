@@ -3,7 +3,6 @@ import { createProject } from './models/project.js';
 import { createDate, isDateValid } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
-console.log(testTodo);
 testTodo.dueDate = createDate('day', 7);
 
 console.log(isValidTodo({ bananabread: 5, title: 666 }));
@@ -14,7 +13,10 @@ newProject.todo.add(testTodo);
 newProject.todo.add(createTodo('do this'));
 newProject.todo.add(createTodo('do that'));
 
-console.log(newProject.debug.getAll());
-console.log(newProject);
+console.log(
+    newProject.todo.getAll().forEach((el) => {
+        console.log(el.title);
+    })
+);
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
