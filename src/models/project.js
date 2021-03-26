@@ -37,6 +37,20 @@ let createProject = (title, color) => {
         custom: [] /*labelled groups*/,
     };
 
+    let _findIndex = (id, where, callback) => {
+        let found,
+            returnValue = -1;
+        found = where.findIndex((el) => el.id === id);
+        if (found !== -1) {
+            if (callback !== undefined) {
+                callback(found);
+            }
+            returnValue = found;
+        }
+
+        return returnValue;
+    };
+
     return Object.assign({
         //id
         get id() {
@@ -69,25 +83,20 @@ let createProject = (title, color) => {
                 _collection.custom.push(newLabel);
             },
             remove(id) {
-                let found,
-                    returnValue = false;
-                found = _collection.custom.findIndex((el) => el.id === id);
-                if (found !== -1) {
-                    _collection.custom.splice(found, 1);
-                    returnValue = true;
-                }
+                let found;
 
-                return returnValue;
+                found = _findIndex(id, _collection.custom, (res) => {
+                    _collection.custom.splice(found, 1);
+                });
+
+                return found !== -1 ? true : false;
             },
             get(id) {
-                let found,
-                    returnValue = -1;
-                found = _collection.custom.findIndex((el) => el.id === id);
-                if (found !== -1) {
-                    returnValue = _collection.custom[found];
-                }
+                let found;
 
-                return returnValue;
+                found = _findIndex(id, _collection.custom);
+
+                return found !== -1 ? _collection.custom[found] : -1;
             },
             getAll() {
                 let returnValue;
@@ -99,88 +108,75 @@ let createProject = (title, color) => {
         },
         todo: {
             add(todoObj, list = 0) {
-                let foundList,
-                    returnValue = false;
+                let foundList;
 
                 if (isValidTodo(todoObj)) {
                     if (list === 0) {
                         _collection.default.push(todoObj);
                     } else {
-                        foundList = _collection.custom.finIndex(
-                            (el) => el.id === list
+                        foundList = _findIndex(
+                            list,
+                            _collection.custom,
+                            (res) => {
+                                _collection.custom[res].todos.push(todoObj);
+                            }
                         );
-                        if (foundList !== -1) {
-                            _collection.custom[foundList].todos.push(todoObj);
-                            returnValue = true;
-                        }
                     }
                 }
 
-                return returnValue;
+                return foundList !== -1 ? true : false;
             },
             remove(id, list = 0) {
-                let found,
-                    returnValue = false;
+                let todoArray,
+                    wasSuccesful = false;
+
                 if (list === 0) {
-                    found = _collection.default.findIndex((el) => el.id === id);
-                    if (found !== -1) {
-                        _collection.default.splice(found, 1);
-                        returnValue = true;
-                    }
+                    _findIndex(id, _collection.default, (res) => {
+                        _collection.default.splice(res, 1);
+                        wasSuccesful = true;
+                    });
                 } else {
-                    let foundList = _collection.custom.findIndex(
-                        (el) => el.id === list
-                    );
-                    if (foundList !== -1) {
-                        let todoArray, indexToDelete;
-                        todoArray = _collection.custom[foundList].todos;
-                        indexToDelete = todos.findIndex((el) => el.id === id);
-                        if (indexToDelete !== -1) {
-                            returnValue = true;
-                            todoArray.splice(indexToDelete, 1);
-                        }
-                    }
+                    _findIndex(list, _collection.custom, (res) => {
+                        todoArray = _collection.custom[res].todos;
+
+                        _findIndex(id, todoArray, (found) => {
+                            todoArray.splice(found, 1);
+                            wasSuccesful = true;
+                        });
+                    });
                 }
 
-                return returnValue;
+                return wasSuccesful;
             },
             get(id, list = 0) {
-                let found,
-                    foundList,
-                    returnValue = -1;
+                let returnValue = -1;
                 if (list === 0) {
-                    found = _collection.default.findIndex((el) => el.id === id);
-                    if (found !== -1) {
-                        returnValue = _collection.default[found];
-                    }
+                    _findIndex(id, _collection.default, (res) => {
+                        returnValue = _collection.default[res];
+                    });
                 } else {
-                    foundList = _collection.custom.findIndex(
-                        (el) => el.id === list
-                    );
-                    if (foundList !== -1) {
-                        found = _collection.custom[foundList].todos.findIndex(
-                            (el) => el.id === id
+                    _findIndex(list, _collection.custom, (res) => {
+                        _findIndex(
+                            id,
+                            _collection.custom[res].todos,
+                            (found) => {
+                                returnValue =
+                                    _collection.custom[res].todos[found];
+                            }
                         );
-                        if (found !== -1) {
-                            returnValue =
-                                _collection.custom[foundList].todos[found];
-                        }
-                    }
+                    });
                 }
 
                 return returnValue;
             },
             getAll(list = 0) {
-                let foundList, returnValue;
+                let returnValue;
                 if (list === 0) {
                     returnValue = _collection.default;
                 } else {
-                    foundList = _collection.custom.finIndex(
-                        (el) => el.id === list
-                    );
-                    if (foundList !== -1) {
-                        returnValue = _collection.custom[foundList].todos;
-                    }
+                    _findIndex(list, _collection.custom, (res) => {
+                        returnValue = _collection.custom[res].todos;
+                    });
                 }
 
                 return returnValue;

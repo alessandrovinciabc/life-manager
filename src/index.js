@@ -14,11 +14,15 @@ newProject.todo.add(createTodo('do this'));
 newProject.todo.add(createTodo('do that'));
 newProject.label.add('Epic label for epic stuff');
 
+console.log(newProject);
+
 console.log(
     newProject.todo.getAll().forEach((el) => {
         console.log(el.title);
-    }),
-    newProject.label.getAll()
+    })
 );
+
+let idForLabel = newProject.label.getAll()[0].id;
+newProject.todo.add(createTodo('make banana bread'), idForLabel);
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
