@@ -117,23 +117,21 @@ let createProject = (title, color) => {
         },
         todo: {
             add(todoObj, list = 0) {
-                let foundList;
+                let result = false;
 
                 if (isValidTodo(todoObj)) {
                     if (list === 0) {
                         _collection.default.push(todoObj);
+                        result = true;
                     } else {
-                        foundList = _findIndex(
-                            list,
-                            _collection.custom,
-                            (res) => {
-                                _collection.custom[res].todos.push(todoObj);
-                            }
-                        );
+                        _findIndex(list, _collection.custom, (res) => {
+                            _collection.custom[res].todos.push(todoObj);
+                            result = true;
+                        });
                     }
                 }
 
-                return foundList !== -1 ? true : false;
+                return result;
             },
             remove(id, list = 0) {
                 let todoArray,
