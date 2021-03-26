@@ -188,7 +188,35 @@ let createProject = (title, color) => {
 
                 return returnValue;
             },
-            move(id, destinationList) {},
+            move(id, toWhere = 0, fromWhere = 0) {
+                let temp,
+                    result = false;
+
+                if (fromWhere === 0) {
+                    _findIndex(id, _collection.default, (res) => {
+                        temp = _collection.default.splice(res, 1)[0];
+                        this.add(temp, toWhere);
+                        result = true;
+                    });
+                } else {
+                    _findIndex(fromWhere, _collection.custom, (res) => {
+                        _findIndex(
+                            id,
+                            _collection.custom[res].todos,
+                            (found) => {
+                                temp = _collection.custom[res].todos.splice(
+                                    found,
+                                    1
+                                )[0];
+                                this.add(temp, toWhere);
+                                result = true;
+                            }
+                        );
+                    });
+                }
+
+                return result;
+            },
         },
     });
 };
