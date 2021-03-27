@@ -288,7 +288,105 @@ let getToday = () => {
     return createDate('full', day, month, year);
 };
 
-export { createDate, isDateValid, getToday };
+let areEqual = (date1, date2) => {
+    let areValidDates,
+        result = false;
+
+    areValidDates = isDateValid(date1) && isDateValid(date2);
+
+    if (areValidDates && date1.type === date2.type) {
+        switch (date1.type) {
+            case 'day':
+                if (date1.value === date2.value) {
+                    result = true;
+                }
+                break;
+            case 'month':
+                if (date1.value === date2.value) {
+                    result = true;
+                }
+                break;
+            case 'daymonth':
+                if (
+                    date1.value.day === date2.value.day &&
+                    date1.value.month === date2.value.month
+                ) {
+                    result = true;
+                }
+                break;
+            case 'full':
+                if (
+                    date1.value.day === date2.value.day &&
+                    date1.value.month === date2.value.month &&
+                    date1.value.year === date2.value.year
+                ) {
+                    result = true;
+                }
+                break;
+        }
+    }
+
+    return result;
+};
+
+let isToday = (date) => {
+    let isValid,
+        nativeToday,
+        today,
+        wrapper,
+        result = false;
+
+    isValid = isDateValid(date);
+    if (isValid) {
+        today = getToday();
+        nativeToday = new Date();
+        switch (date.type) {
+            case 'day':
+                let converted = nativeToday.getDay();
+
+                converted = converted === 0 ? 7 : converted;
+                //In Javascript dates getDay() returns a number from 0 to 6.
+                //0 = Sunday 1 = Monday ... 6 = Saturday
+                //We just check if the value is 0 and change it, we can keep
+                //other numbers as they are as they do not create conflicts.
+
+                wrapper = createDate('day', converted);
+
+                if (wrapper.value === date.value) {
+                    result = true;
+                }
+
+                break;
+            case 'month':
+                wrapper = createDate('month', nativeToday.getMonth() + 1);
+
+                if (wrapper.value === date.value) {
+                    result = true;
+                }
+
+                break;
+            case 'daymonth':
+                if (
+                    today.value.day === date.value.day &&
+                    today.value.month === date.value.month
+                ) {
+                    result = true;
+                }
+
+                break;
+            case 'full':
+                if (areEqual(date, today)) {
+                    result = true;
+                }
+
+                break;
+        }
+    }
+
+    return result;
+};
+
+export { createDate, isDateValid, getToday, areEqual, isToday };
 
 //Dates
 //
