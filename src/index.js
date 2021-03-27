@@ -16,6 +16,8 @@ let newDate = createDate('full', 7, 5, 1999);
 console.log('newDate valid? ', isDateValid(newDate));
 console.log(getToday());
 console.log('is it saturday today?', isToday(createDate('day', 'saturday')));
-console.log(getNextOccurrence(createDate('day', 'saturday')));
+console.log(getNextOccurrence(createDate('day', 'monday')));
+console.log(getNextOccurrence(createDate('month', 'jan')));
+console.log(getNextOccurrence(createDate('month', 'sep')));
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;

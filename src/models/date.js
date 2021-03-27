@@ -388,37 +388,34 @@ let isToday = (date) => {
 
 let getNextOccurrence = (date) => {
     //returns a full date object of the next occurrence of the specified date object
-    let dateIsValid, native, result;
+    let dateIsValid, result;
 
     dateIsValid = isDateValid(date);
 
     if (dateIsValid) {
+        let dateN, todayN, difference, timeToAdd, native, finalNative;
+
         native = new Date();
         //todaysDate = native.getDate();
         switch (date.type) {
             case 'day':
-                let dateN, todayN, difference, daysToAdd, finalNative;
-
                 dateN = lookupDictionary(date.value, Days, 3) + 1;
-                console.log(dateN);
 
                 todayN = native.getDay();
                 todayN = todayN === 0 ? 7 : todayN;
-                console.log(todayN);
 
                 difference = dateN - todayN;
 
                 if (difference === 0) {
-                    daysToAdd = 7;
+                    timeToAdd = 7;
                 } else if (difference < 0) {
-                    daysToAdd = 7 - difference * -1;
-                    console.log(daysToAdd);
+                    timeToAdd = 7 + difference;
                 } else if (difference > 0) {
-                    daysToAdd = 7 - difference;
+                    timeToAdd = difference;
                 }
 
                 finalNative = new Date();
-                finalNative.setDate(native.getDate() + daysToAdd);
+                finalNative.setDate(native.getDate() + timeToAdd);
                 //setDate updates the whole date object if the value provided
                 //is outside the range.
 
@@ -431,6 +428,31 @@ let getNextOccurrence = (date) => {
                 break;
 
             case 'month':
+                dateN = lookupDictionary(date.value, Months, 3) + 1;
+
+                todayN = native.getMonth() + 1;
+
+                difference = dateN - todayN;
+
+                if (difference === 0) {
+                    timeToAdd = 12;
+                } else if (difference < 0) {
+                    timeToAdd = 12 + difference;
+                } else if (difference > 0) {
+                    timeToAdd = difference;
+                }
+
+                finalNative = new Date();
+                finalNative.setMonth(native.getMonth() + timeToAdd);
+
+                result = createDate(
+                    'full',
+                    1,
+                    finalNative.getMonth() + 1,
+                    finalNative.getFullYear()
+                );
+
+                break;
             case 'daymonth':
             case 'full':
                 result = createDate(
