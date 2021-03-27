@@ -386,7 +386,89 @@ let isToday = (date) => {
     return result;
 };
 
-export { createDate, isDateValid, getToday, areEqual, isToday };
+let getNextOccurrence = (date) => {
+    //returns a full date object of the next occurrence of the specified date object
+    let dateIsValid, native, result;
+
+    dateIsValid = isDateValid(date);
+
+    if (dateIsValid) {
+        native = new Date();
+        //todaysDate = native.getDate();
+        switch (date.type) {
+            case 'day':
+                let dateN, todayN, difference, daysToAdd, finalNative;
+
+                dateN = lookupDictionary(date.value, Days, 3) + 1;
+                console.log(dateN);
+
+                todayN = native.getDay();
+                todayN = todayN === 0 ? 7 : todayN;
+                console.log(todayN);
+
+                difference = dateN - todayN;
+
+                if (difference === 0) {
+                    daysToAdd = 7;
+                } else if (difference < 0) {
+                    daysToAdd = 7 - difference * -1;
+                    console.log(daysToAdd);
+                } else if (difference > 0) {
+                    daysToAdd = 7 - difference;
+                }
+
+                finalNative = new Date();
+                finalNative.setDate(native.getDate() + daysToAdd);
+                //setDate updates the whole date object if the value provided
+                //is outside the range.
+
+                result = createDate(
+                    'full',
+                    finalNative.getDate(),
+                    finalNative.getMonth() + 1,
+                    finalNative.getFullYear()
+                );
+                break;
+
+            case 'month':
+            case 'daymonth':
+            case 'full':
+                result = createDate(
+                    date.type,
+                    date.value.day,
+                    date.value.month,
+                    date.value.year
+                );
+                break;
+        }
+    } else {
+        throw 'Invalid date object provided for getNextOccurrence.';
+    }
+
+    return result;
+};
+
+//TODO
+let isBefore = (date, against) => {
+    //is date before 'against' ?
+    let datesAreValid, result;
+
+    datesAreValid = isValid(date) && isValid(against);
+
+    if (datesAreValid) {
+    }
+};
+
+let isAfter = (date, against) => {};
+
+export {
+    createDate,
+    isDateValid,
+    getToday,
+    areEqual,
+    isToday,
+    getNextOccurrence,
+};
 
 //Dates
 //

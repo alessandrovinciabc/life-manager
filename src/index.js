@@ -6,6 +6,7 @@ import {
     getToday,
     areEqual,
     isToday,
+    getNextOccurrence,
 } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
@@ -15,5 +16,6 @@ let newDate = createDate('full', 7, 5, 1999);
 console.log('newDate valid? ', isDateValid(newDate));
 console.log(getToday());
 console.log('is it saturday today?', isToday(createDate('day', 'saturday')));
+console.log(getNextOccurrence(createDate('day', 'saturday')));
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
