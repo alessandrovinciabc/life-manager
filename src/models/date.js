@@ -273,7 +273,22 @@ let isDateValid = (obj) => {
     return result;
 };
 
-export { createDate, isDateValid };
+//                              HELPFUL METHODS
+
+let getToday = () => {
+    let native, day, month, year;
+
+    native = new Date();
+    [day, month, year] = [
+        native.getDate(),
+        native.getMonth() + 1,
+        native.getFullYear(),
+    ];
+
+    return createDate('full', day, month, year);
+};
+
+export { createDate, isDateValid, getToday };
 
 //Dates
 //
