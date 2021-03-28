@@ -27,6 +27,10 @@ const Months = [
 ];
 Object.freeze(Months);
 
+let isLeapYear = (year) => {
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+};
+
 //                              DATE OBJECTS CREATION
 let createDay = (value) => {
     let normalized;
@@ -569,7 +573,7 @@ let createCalendar = () => {
     let newCalendar;
 
     newCalendar = new Map();
-    let generateMonth = (month, year) => {
+    let _generateMonth = (month, year) => {
         let newCalendarMonth, monthN, maxForADay;
 
         if (typeof year !== 'number') {
@@ -586,9 +590,14 @@ let createCalendar = () => {
 
         if (monthN % 2 === 0) {
             //31-day month
+            maxForADay = 31;
         } else if (monthN === 1) {
             //February - 29 is a valid day here
-            maxForADay = 29;
+            if (isLeapYear(year)) {
+                maxForADay = 29;
+            } else {
+                maxForADay = 28;
+            }
         } else {
             //The max value for a day becomes 28 here
             maxForADay = 28;
@@ -602,7 +611,7 @@ let createCalendar = () => {
         return newCalendarMonth;
     };
 
-    let generateYear = (year) => {
+    let _generateYear = (year) => {
         let newCalendarYear;
 
         if (typeof year === 'number' && year >= 0) {
@@ -613,11 +622,22 @@ let createCalendar = () => {
 
         newCalendarYear = new Map();
         for (let i = 1; i <= 12; ++i) {
-            newCalendarYear.set(i, generateMonth(i, year));
+            newCalendarYear.set(i, _generateMonth(i, year));
         }
 
         return newCalendarYear;
     };
+
+    let addYear = (year) => {
+        let result = false;
+        if (typeof year === 'number' && year >= 0 && !newCalendar.has(year)) {
+            newCalendar.set(year, _generateYear(year));
+        }
+
+        return result;
+    };
+
+    return { calendar: newCalendar, addYear };
 };
 
 export {
@@ -628,6 +648,7 @@ export {
     isToday,
     getNextOccurrence,
     getDay,
+    createCalendar,
 };
 
 //Dates

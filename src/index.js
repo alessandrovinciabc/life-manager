@@ -8,6 +8,7 @@ import {
     isToday,
     getNextOccurrence,
     getDay,
+    createCalendar,
 } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
@@ -21,5 +22,9 @@ console.log('is it sunday today?', isToday(createDate('day', 'sunday')));
 
 console.log(getDay(createDate('full', 20, 5, 1999), true));
 console.log(getDay(createDate('full', 20, 5, 2021)));
+
+let newCalendar = createCalendar();
+newCalendar.addYear(1999);
+console.log(newCalendar.calendar);
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
