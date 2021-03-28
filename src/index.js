@@ -7,6 +7,7 @@ import {
     areEqual,
     isToday,
     getNextOccurrence,
+    getDay,
 } from './models/date.js';
 
 let testTodo = createTodo('Eat an apple');
@@ -17,13 +18,8 @@ console.log('newDate valid? ', isDateValid(newDate));
 console.log(getToday());
 console.log('is it saturday today?', isToday(createDate('day', 'saturday')));
 console.log('is it sunday today?', isToday(createDate('day', 'sunday')));
-console.log(getNextOccurrence(createDate('day', 'monday')));
-console.log(getNextOccurrence(createDate('month', 'jan')));
-console.log(getNextOccurrence(createDate('month', 'sep')));
-console.log(getNextOccurrence(createDate('day', 'sunday')));
-console.log(getNextOccurrence(createDate('daymonth', 28, 'march')));
-console.log(getNextOccurrence(createDate('daymonth', 29, 'march')));
-console.log(getNextOccurrence(createDate('daymonth', 20, 'may')));
-console.log(getNextOccurrence(createDate('daymonth', 1, 'jan')));
+
+console.log(getDay(createDate('full', 20, 5, 1999), true));
+console.log(getDay(createDate('full', 20, 5, 2021)));
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;

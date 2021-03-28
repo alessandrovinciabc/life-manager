@@ -3,8 +3,8 @@ import { upperCaseFirst, lookupDictionary } from './strings.js';
 const Days = [
     'Monday', //0
     'Tuesday',
-    'Thursday',
     'Wednesday',
+    'Thursday',
     'Friday',
     'Saturday',
     'Sunday', //6
@@ -510,18 +510,115 @@ let getNextOccurrence = (date) => {
     return result;
 };
 
+let getDay = (obj, wantString = false) => {
+    let isValid,
+        result = -1,
+        native,
+        year,
+        month,
+        day;
+
+    isValid = isDateValid(obj);
+
+    if (isValid) {
+        switch (obj.type) {
+            case 'daymonth':
+                let convertedToFull;
+
+                convertedToFull = getNextOccurrence(obj);
+                ({ year, month, day } = convertedToFull);
+                month = lookupDictionary(month, Months, 3);
+                native = new Date(year, month, day);
+                break;
+
+            case 'full':
+                ({ year, month, day } = obj.value);
+                month = lookupDictionary(month, Months, 3);
+                native = new Date(year, month, day);
+                break;
+
+            case 'default':
+                throw 'Invalid date type for getDay.';
+                break;
+        }
+
+        let convertedDay;
+        convertedDay = native.getDay();
+        convertedDay = convertedDay === 0 ? 7 : convertedDay;
+        convertedDay -= 1;
+
+        if (wantString) {
+            result = Days[convertedDay];
+        } else {
+            result = convertedDay + 1;
+        }
+    }
+
+    return result;
+};
+
 //TODO
 let isBefore = (date, against) => {
     //is date before 'against' ?
-    let datesAreValid, result;
-
-    datesAreValid = isValid(date) && isValid(against);
-
-    if (datesAreValid) {
-    }
 };
 
 let isAfter = (date, against) => {};
+
+//                              CALENDARS
+let createCalendar = () => {
+    let newCalendar;
+
+    newCalendar = new Map();
+    let generateMonth = (month, year) => {
+        let newCalendarMonth, monthN, maxForADay;
+
+        if (typeof year !== 'number') {
+            throw 'Year is not a number.';
+        } else if (year < 0) {
+            throw 'Year is not a valid number.';
+        }
+
+        if (typeof month === 'number' && month >= 1 && month <= 12) {
+            monthN = month - 1;
+        } else {
+            throw 'Invalid value provided.';
+        }
+
+        if (monthN % 2 === 0) {
+            //31-day month
+        } else if (monthN === 1) {
+            //February - 29 is a valid day here
+            maxForADay = 29;
+        } else {
+            //The max value for a day becomes 28 here
+            maxForADay = 28;
+        }
+
+        newCalendarMonth = new Map();
+        for (let i = 1; i <= maxForADay; ++i) {
+            newCalendarMonth.set(i, createDate('full', i, monthN + 1, year));
+        }
+
+        return newCalendarMonth;
+    };
+
+    let generateYear = (year) => {
+        let newCalendarYear;
+
+        if (typeof year === 'number' && year >= 0) {
+            //All good
+        } else {
+            throw 'Invalid year provided.';
+        }
+
+        newCalendarYear = new Map();
+        for (let i = 1; i <= 12; ++i) {
+            newCalendarYear.set(i, generateMonth(i, year));
+        }
+
+        return newCalendarYear;
+    };
+};
 
 export {
     createDate,
@@ -530,6 +627,7 @@ export {
     areEqual,
     isToday,
     getNextOccurrence,
+    getDay,
 };
 
 //Dates
