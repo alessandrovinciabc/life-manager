@@ -393,7 +393,7 @@ let getNextOccurrence = (date) => {
     dateIsValid = isDateValid(date);
 
     if (dateIsValid) {
-        let dateN, todayN, timeToAdd, native, finalNative;
+        let dateObj, timeToAdd, native, finalNative;
 
         native = new Date();
 
@@ -463,6 +463,37 @@ let getNextOccurrence = (date) => {
 
                 break;
             case 'daymonth':
+                let primitiveDate, primitiveNative;
+
+                let convertedMonth;
+                convertedMonth = lookupDictionary(date.value.month, Months, 3);
+                //Months are not saved as numbers in fulldate objects
+
+                dateObj = new Date(
+                    native.getFullYear(),
+                    convertedMonth,
+                    date.value.day
+                );
+
+                primitiveDate = dateObj.getTime();
+                primitiveNative = native.getTime();
+
+                if (primitiveDate <= primitiveNative) {
+                    timeToAdd = 1;
+                    finalNative = new Date(primitiveDate);
+                    finalNative.setFullYear(native.getFullYear() + timeToAdd);
+                } else if (primitiveDate > primitiveNative) {
+                    finalNative = new Date(primitiveDate);
+                }
+
+                result = createDate(
+                    'full',
+                    finalNative.getDate(),
+                    finalNative.getMonth() + 1,
+                    finalNative.getFullYear()
+                );
+
+                break;
             case 'full':
                 result = createDate(
                     date.type,

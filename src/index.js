@@ -21,5 +21,9 @@ console.log(getNextOccurrence(createDate('day', 'monday')));
 console.log(getNextOccurrence(createDate('month', 'jan')));
 console.log(getNextOccurrence(createDate('month', 'sep')));
 console.log(getNextOccurrence(createDate('day', 'sunday')));
+console.log(getNextOccurrence(createDate('daymonth', 28, 'march')));
+console.log(getNextOccurrence(createDate('daymonth', 29, 'march')));
+console.log(getNextOccurrence(createDate('daymonth', 20, 'may')));
+console.log(getNextOccurrence(createDate('daymonth', 1, 'jan')));
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
