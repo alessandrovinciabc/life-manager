@@ -393,26 +393,47 @@ let getNextOccurrence = (date) => {
     dateIsValid = isDateValid(date);
 
     if (dateIsValid) {
-        let dateN, todayN, difference, timeToAdd, native, finalNative;
+        let dateN, todayN, timeToAdd, native, finalNative;
 
         native = new Date();
-        //todaysDate = native.getDate();
+
+        let getTimeToAdd = (dateToCheck, type) => {
+            let n, today, maxValue, dictionary, difference, output;
+
+            switch (type) {
+                case 'day':
+                    maxValue = 7;
+                    dictionary = Days;
+                    today = native.getDay();
+                    today = today === 0 ? maxValue : today;
+                    break;
+                case 'month':
+                    maxValue = 12;
+                    dictionary = Months;
+                    today = native.getMonth() + 1;
+                    break;
+                default:
+                    throw 'Invalid type for date object.';
+                    break;
+            }
+            n = lookupDictionary(dateToCheck.value, dictionary, 3) + 1;
+
+            difference = n - today;
+
+            if (difference === 0) {
+                output = maxValue;
+            } else if (difference < 0) {
+                output = maxValue + difference;
+            } else if (difference > 0) {
+                output = difference;
+            }
+
+            return output;
+        };
+
         switch (date.type) {
             case 'day':
-                dateN = lookupDictionary(date.value, Days, 3) + 1;
-
-                todayN = native.getDay();
-                todayN = todayN === 0 ? 7 : todayN;
-
-                difference = dateN - todayN;
-
-                if (difference === 0) {
-                    timeToAdd = 7;
-                } else if (difference < 0) {
-                    timeToAdd = 7 + difference;
-                } else if (difference > 0) {
-                    timeToAdd = difference;
-                }
+                timeToAdd = getTimeToAdd(date, 'day');
 
                 finalNative = new Date();
                 finalNative.setDate(native.getDate() + timeToAdd);
@@ -428,19 +449,7 @@ let getNextOccurrence = (date) => {
                 break;
 
             case 'month':
-                dateN = lookupDictionary(date.value, Months, 3) + 1;
-
-                todayN = native.getMonth() + 1;
-
-                difference = dateN - todayN;
-
-                if (difference === 0) {
-                    timeToAdd = 12;
-                } else if (difference < 0) {
-                    timeToAdd = 12 + difference;
-                } else if (difference > 0) {
-                    timeToAdd = difference;
-                }
+                timeToAdd = getTimeToAdd(date, 'month');
 
                 finalNative = new Date();
                 finalNative.setMonth(native.getMonth() + timeToAdd);
