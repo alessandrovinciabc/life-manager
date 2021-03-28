@@ -89,8 +89,7 @@ let createDayMonth = (day, month) => {
         //February - 29 is a valid day here
         maxForADay = 29;
     } else {
-        //The max value for a day becomes 28 here
-        maxForADay = 28;
+        maxForADay = 30;
     }
 
     dayIsValid = typeof day === 'number' && day >= 1 && day <= maxForADay;
@@ -111,8 +110,9 @@ let createDayMonth = (day, month) => {
 };
 
 let createFullDate = (day, month, year) => {
-    let newObj;
-    if (day === 29 && !isLeapYear(year)) {
+    let newObj, convertedMonth;
+    convertedMonth = lookupDictionary(month, Months, 3) + 1;
+    if (convertedMonth === 2 && day === 29 && !isLeapYear(year)) {
         throw 'Error: invalid day provided. Year is not leap.';
     }
     newObj = createDayMonth(day, month);
@@ -207,8 +207,7 @@ let isDayMonthValid = (obj) => {
             //February - 29 is a valid day here
             maxForADay = 29;
         } else {
-            //The max value for a day becomes 28 here
-            maxForADay = 28;
+            maxForADay = 30;
         }
 
         isValidDay =
@@ -239,7 +238,11 @@ let isFullDateValid = (obj) => {
         obj.value.hasOwnProperty('year') &&
         typeof obj.value.year === 'number';
 
-    if (obj.value.day === 29 && !isLeapYear(obj.value.year)) {
+    if (
+        obj.value.month === 'Febraury' &&
+        obj.value.day === 29 &&
+        !isLeapYear(obj.value.year)
+    ) {
         isValidFullDate = false;
     }
 
@@ -608,12 +611,15 @@ let createCalendar = () => {
             }
         } else {
             //The max value for a day becomes 28 here
-            maxForADay = 28;
+            maxForADay = 30;
         }
 
         newCalendarMonth = new Map();
         for (let i = 1; i <= maxForADay; ++i) {
-            newCalendarMonth.set(i, createDate('full', i, monthN + 1, year));
+            newCalendarMonth.set(i, {
+                date: createDate('full', i, monthN + 1, year),
+                contents: [],
+            });
         }
 
         return newCalendarMonth;
