@@ -111,7 +111,11 @@ let createDayMonth = (day, month) => {
 };
 
 let createFullDate = (day, month, year) => {
-    let newObj = createDayMonth(day, month);
+    let newObj;
+    if (day === 29 && !isLeapYear(year)) {
+        throw 'Error: invalid day provided. Year is not leap.';
+    }
+    newObj = createDayMonth(day, month);
     newObj.type = 'full';
     newObj.value.year = year;
 
@@ -234,6 +238,10 @@ let isFullDateValid = (obj) => {
         obj.value.hasOwnProperty('month') &&
         obj.value.hasOwnProperty('year') &&
         typeof obj.value.year === 'number';
+
+    if (obj.value.day === 29 && !isLeapYear(obj.value.year)) {
+        isValidFullDate = false;
+    }
 
     if (isValidFullDate) {
         isValidDayMonth = isDayMonthValid(
