@@ -23,11 +23,7 @@ console.log(getDay(createDate('full', 20, 5, 2021)));
 
 let newCalendar = createCalendar();
 newCalendar.addYear(1999);
-newCalendar.calendar
-    .get(1999)
-    .get(5)
-    .get(20)
-    .contents.push(createDate('full', 20, 5, 1999));
-console.log(newCalendar.calendar.get(1999).get(5).get(20));
+newCalendar.getDay(20, 5, 1999).contents.push(testTodo.id);
+console.log(newCalendar.getDay(20, 5, 1999));
 
 document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;

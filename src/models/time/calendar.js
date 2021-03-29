@@ -72,7 +72,11 @@ let createCalendar = () => {
         return result;
     };
 
-    return { calendar: newCalendar, addYear };
+    let getDay = (day, month, year) => {
+        return newCalendar.get(year).get(month).get(day);
+    };
+
+    return { calendar: newCalendar, addYear, getDay };
 };
 
 export { createCalendar };
