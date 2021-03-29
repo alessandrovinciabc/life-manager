@@ -143,15 +143,46 @@ let createDate = (type, ...values) => {
 };
 
 //                              DATE OBJECTS VALIDATION
+
+let _formatCheck = (obj, expectedType) => {
+    let sub, objProperties, valueProperties;
+    let valueCheck = false;
+
+    sub = []; //properties that value must have
+    objProperties = Object.getOwnPropertyNames(obj);
+    valueProperties = Object.getOwnPropertyNames(obj.value);
+
+    if (
+        objProperties.includes('type') &&
+        objProperties.includes('value') &&
+        expectedType === obj.type
+    ) {
+        switch (obj.type) {
+            case 'day':
+                break;
+            case 'month':
+                break;
+            case 'daymonth':
+                sub = ['day', 'month'];
+                break;
+            case 'full':
+                sub = ['day', 'month', 'year'];
+                break;
+        }
+
+        valueCheck = sub.every((el) => valueProperties.includes(el));
+    } else {
+        //failed check
+    }
+
+    return valueCheck;
+};
+
 let isDayValid = (obj) => {
     let indexOfDay,
         isValid = false;
 
-    if (
-        obj.hasOwnProperty('type') &&
-        obj.type === 'day' &&
-        obj.hasOwnProperty('value')
-    ) {
+    if (_formatCheck(obj, 'day')) {
         indexOfDay = lookupDictionary(obj.value, Days, 3);
         isValid = indexOfDay === -1 ? false : true;
     }
@@ -163,11 +194,7 @@ let isMonthValid = (obj) => {
     let indexOfMonth,
         isValid = false;
 
-    if (
-        obj.hasOwnProperty('type') &&
-        obj.type === 'month' &&
-        obj.hasOwnProperty('value')
-    ) {
+    if (_formatCheck(obj, 'month')) {
         indexOfMonth = lookupDictionary(obj.value, Months, 3);
         isValid = indexOfMonth === -1 ? false : true;
     }
@@ -183,13 +210,7 @@ let isDayMonthValid = (obj) => {
         isValidDayMonthObj,
         isValidMonth = true;
 
-    isValidDayMonthObj =
-        typeof obj === 'object' &&
-        obj.hasOwnProperty('type') &&
-        obj.type === 'daymonth' &&
-        obj.hasOwnProperty('value') &&
-        obj.value.hasOwnProperty('day') &&
-        obj.value.hasOwnProperty('month');
+    isValidDayMonthObj = _formatCheck(obj, 'daymonth');
 
     if (isValidDayMonthObj) {
         maxForADay = 31;
@@ -211,6 +232,7 @@ let isDayMonthValid = (obj) => {
             typeof obj.value.day === 'number' &&
             obj.value.day >= 1 &&
             obj.value.day <= maxForADay;
+
         if (isValidDay && isValidMonth) {
             //It's a valid DayMonth Object.
         } else {
@@ -225,15 +247,7 @@ let isFullDateValid = (obj) => {
     let isValidFullDate,
         isValidDayMonth = false;
 
-    isValidFullDate =
-        typeof obj === 'object' &&
-        obj.hasOwnProperty('type') &&
-        obj.type === 'full' &&
-        obj.hasOwnProperty('value') &&
-        obj.value.hasOwnProperty('day') &&
-        obj.value.hasOwnProperty('month') &&
-        obj.value.hasOwnProperty('year') &&
-        typeof obj.value.year === 'number';
+    isValidFullDate = _formatCheck(obj, 'full');
 
     if (
         obj.value.month === 'Febraury' &&
@@ -255,31 +269,21 @@ let isFullDateValid = (obj) => {
 //Combines all other validation functions into one
 //This only will be exported
 let isDateValid = (obj) => {
-    const ValidTypes = ['day', 'month', 'daymonth', 'full'];
-    let formatIsValid,
-        result = false;
+    let result = false;
 
-    formatIsValid =
-        typeof obj === 'object' &&
-        obj.hasOwnProperty('type') &&
-        ValidTypes.includes(obj.type) &&
-        obj.hasOwnProperty('value');
-
-    if (formatIsValid) {
-        switch (obj.type) {
-            case 'day':
-                result = isDayValid(obj);
-                break;
-            case 'month':
-                result = isMonthValid(obj);
-                break;
-            case 'daymonth':
-                result = isDayMonthValid(obj);
-                break;
-            case 'full':
-                result = isFullDateValid(obj);
-                break;
-        }
+    switch (obj.type) {
+        case 'day':
+            result = isDayValid(obj);
+            break;
+        case 'month':
+            result = isMonthValid(obj);
+            break;
+        case 'daymonth':
+            result = isDayMonthValid(obj);
+            break;
+        case 'full':
+            result = isFullDateValid(obj);
+            break;
     }
 
     return result;
@@ -293,5 +297,3 @@ export { Days, Months };
 //Type: day/month/numday+month/day+month+year
 //day, month and daymonth types are always recurring
 //Value: X
-
-//todo: 29th of feb. should be valid for daymonth types
