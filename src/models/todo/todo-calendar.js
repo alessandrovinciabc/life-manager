@@ -1,4 +1,4 @@
-import { createProject } from './project.js';
+import { createProject, findIndex } from './project.js';
 import { createCalendar } from '../time/calendar.js';
 import { Days, Months } from '../time/date.js';
 import {
@@ -17,20 +17,6 @@ let createTodoCalendar = () => {
     calendar.addYear(currentYear);
 
     _projects = [];
-
-    let _findIndex = (id, where, callback) => {
-        let found,
-            returnValue = -1;
-        found = where.findIndex((el) => el.id === id);
-        if (found !== -1) {
-            if (callback !== undefined) {
-                callback(found);
-            }
-            returnValue = found;
-        }
-
-        return returnValue;
-    };
 
     let _getAndGroupTodos = () => {
         let groups = [];
@@ -106,7 +92,7 @@ let createTodoCalendar = () => {
             get(id) {
                 let result = -1;
 
-                _findIndex(id, _projects, (res) => {
+                findIndex(id, _projects, (res) => {
                     result = _projects[res];
                 });
 
@@ -115,7 +101,7 @@ let createTodoCalendar = () => {
             remove(id) {
                 let result = false;
 
-                _findIndex(id, _projects, (res) => {
+                findIndex(id, _projects, (res) => {
                     _projects.splice(res, 1);
                     result = true;
                 });

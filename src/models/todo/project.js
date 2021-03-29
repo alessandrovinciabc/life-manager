@@ -3,6 +3,20 @@ import { isValidTodo } from './todo.js';
 
 const AvailableColors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple'];
 
+let findIndex = (id, where, callback) => {
+    let found,
+        returnValue = -1;
+    found = where.findIndex((el) => el.id === id);
+    if (found !== -1) {
+        if (callback !== undefined) {
+            callback(found);
+        }
+        returnValue = found;
+    }
+
+    return returnValue;
+};
+
 let createProject = (title, color) => {
     //Private
     let _id, _title, _color, _collection;
@@ -36,20 +50,6 @@ let createProject = (title, color) => {
             /*todos without a label*/
         ],
         custom: [] /*labelled groups*/,
-    };
-
-    let _findIndex = (id, where, callback) => {
-        let found,
-            returnValue = -1;
-        found = where.findIndex((el) => el.id === id);
-        if (found !== -1) {
-            if (callback !== undefined) {
-                callback(found);
-            }
-            returnValue = found;
-        }
-
-        return returnValue;
     };
 
     //Public
@@ -89,7 +89,7 @@ let createProject = (title, color) => {
             remove(id) {
                 let wasSuccesful = false;
 
-                _findIndex(id, _collection.custom, (res) => {
+                findIndex(id, _collection.custom, (res) => {
                     _collection.custom.splice(found, 1);
                     wasSuccesful = true;
                 });
@@ -99,7 +99,7 @@ let createProject = (title, color) => {
             rename(id, newTitle) {
                 let result = false;
                 _validateTitle(newTitle);
-                _findIndex(id, _collection.custom, (found) => {
+                findIndex(id, _collection.custom, (found) => {
                     _collection.custom[found].label = newTitle;
                     result = true;
                 });
@@ -128,7 +128,7 @@ let createProject = (title, color) => {
                         _collection.default.push(todoObj);
                         result = true;
                     } else {
-                        _findIndex(list, _collection.custom, (res) => {
+                        findIndex(list, _collection.custom, (res) => {
                             _collection.custom[res].todos.push(todoObj);
                             result = true;
                         });
@@ -142,15 +142,15 @@ let createProject = (title, color) => {
                     wasSuccesful = false;
 
                 if (list === 0) {
-                    _findIndex(id, _collection.default, (res) => {
+                    findIndex(id, _collection.default, (res) => {
                         _collection.default.splice(res, 1);
                         wasSuccesful = true;
                     });
                 } else {
-                    _findIndex(list, _collection.custom, (res) => {
+                    findIndex(list, _collection.custom, (res) => {
                         todoArray = _collection.custom[res].todos;
 
-                        _findIndex(id, todoArray, (found) => {
+                        findIndex(id, todoArray, (found) => {
                             todoArray.splice(found, 1);
                             wasSuccesful = true;
                         });
@@ -162,12 +162,12 @@ let createProject = (title, color) => {
             get(id, list = 0) {
                 let returnValue = -1;
                 if (list === 0) {
-                    _findIndex(id, _collection.default, (res) => {
+                    findIndex(id, _collection.default, (res) => {
                         returnValue = _collection.default[res];
                     });
                 } else {
-                    _findIndex(list, _collection.custom, (res) => {
-                        _findIndex(
+                    findIndex(list, _collection.custom, (res) => {
+                        findIndex(
                             id,
                             _collection.custom[res].todos,
                             (found) => {
@@ -185,7 +185,7 @@ let createProject = (title, color) => {
                 if (list === 0) {
                     returnValue = _collection.default;
                 } else {
-                    _findIndex(list, _collection.custom, (res) => {
+                    findIndex(list, _collection.custom, (res) => {
                         returnValue = _collection.custom[res].todos;
                     });
                 }
@@ -197,14 +197,14 @@ let createProject = (title, color) => {
                     result = false;
 
                 if (fromWhere === 0) {
-                    _findIndex(id, _collection.default, (res) => {
+                    findIndex(id, _collection.default, (res) => {
                         temp = _collection.default.splice(res, 1)[0];
                         this.add(temp, toWhere);
                         result = true;
                     });
                 } else {
-                    _findIndex(fromWhere, _collection.custom, (res) => {
-                        _findIndex(
+                    findIndex(fromWhere, _collection.custom, (res) => {
+                        findIndex(
                             id,
                             _collection.custom[res].todos,
                             (found) => {
@@ -225,7 +225,7 @@ let createProject = (title, color) => {
     });
 };
 
-export { createProject };
+export { createProject, findIndex };
 
 //Projects can have "labels" inside them to group activities together
 //There must be an "Inbox" which will be the default "project" where todos will be put
