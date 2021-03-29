@@ -1,4 +1,4 @@
-import { generateId } from './id.js';
+import { generateId } from '../id.js';
 import { isValidTodo } from './todo.js';
 
 const AvailableColors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple'];

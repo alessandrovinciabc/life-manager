@@ -1,5 +1,5 @@
-import { createTodo, isValidTodo } from './models/todo.js';
-import { createProject } from './models/project.js';
+import { createTodo, isValidTodo } from './models/todo/todo.js';
+import { createProject } from './models/todo/project.js';
 
 //date.js
 import { createDate, isDateValid } from './models/time/date.js';

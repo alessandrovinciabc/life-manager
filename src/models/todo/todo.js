@@ -1,5 +1,5 @@
-import { generateId } from './id.js';
-import { isDateValid } from './time/date.js';
+import { generateId } from '../id.js';
+import { isDateValid } from '../time/date.js';
 
 //dueDate = 0 means there's no date to the todo
 let createTodo = (title, priority = 0, dueDate = 0) => {
