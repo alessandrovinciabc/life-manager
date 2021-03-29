@@ -83,6 +83,8 @@ let createProject = (title, color) => {
                 };
 
                 _collection.custom.push(newLabel);
+
+                return newLabel.id;
             },
             remove(id) {
                 let wasSuccesful = false;
