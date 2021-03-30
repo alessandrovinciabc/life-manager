@@ -1,9 +1,8 @@
 import { createProject, findIndex } from './project.js';
 import { createCalendar } from '../time/calendar.js';
-import { Days, Months } from '../time/date.js';
+import { Months } from '../time/date.js';
 import {
     lookupDictionary,
-    areEqual,
     getNextOccurrence,
     getToday,
 } from '../time/date-util.js';

@@ -1,5 +1,4 @@
 import { createTodo, isValidTodo } from './models/todo/todo.js';
-import { createProject } from './models/todo/project.js';
 
 //date.js
 import { createDate, isDateValid } from './models/time/date.js';
@@ -35,4 +34,4 @@ proj2.todo.add(todos[2], label2);
 calendar.refresh(getToday().value.year);
 console.log(calendar.get());
 
-document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
+//document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
