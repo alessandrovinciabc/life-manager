@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="header">
-            <h1 class="header-main">
+            <div class="header-main">
                 <button class="btn-menu tooltip">
                     <img
                         class="header-icon-menu"
@@ -19,14 +19,21 @@
                     />
                     <span class="tooltip-text"> Open menu </span>
                 </button>
-                <img
-                    class="header-icon-logo"
-                    src="./img/tabler-icon-pacman.svg"
-                    alt="pacman logo"
-                />
-                Life Manager
-            </h1>
-            <div class="header-buttons"></div>
+                <h1>
+                    <span class="header-logo">
+                        <img
+                            class="header-icon-logo"
+                            src="./img/tabler-icon-pacman.svg"
+                            alt="pacman logo"
+                        />
+                        Life Manager
+                    </span>
+                </h1>
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="menu"></div>
+            <div class="content"></div>
         </div>
         <script src="./dist/bundle.js"></script>
     </body>
