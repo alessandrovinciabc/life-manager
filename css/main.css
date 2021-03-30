@@ -205,3 +205,35 @@ body {
 .main-container > .content {
     height: 100%;
 }
+
+/*Content*/
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 305px);
+
+    padding: 0 60px;
+
+    overflow: auto;
+}
+
+.folder-name {
+    position: sticky;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+    height: 68.8px;
+    width: 100%;
+
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.folder-content {
+    height: calc(100% - 68.8px);
+}
