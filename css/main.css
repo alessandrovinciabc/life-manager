@@ -220,6 +220,7 @@ body {
 
 .folder-name {
     position: sticky;
+    top: 0;
 
     display: flex;
     align-items: flex-end;
@@ -232,6 +233,7 @@ body {
     font-weight: bold;
 
     border-bottom: 1px solid #e6e6e6;
+    background-color: white;
 }
 
 .folder-content {
