@@ -21,23 +21,22 @@ let createPrompt = (element) => {
 };
 
 let prompts = {
-  taskAdd: createPrompt(DOM.prompt.taskAdder),
-  projectAdd: createPrompt(DOM.prompt.projectAdder),
+  task: createPrompt(DOM.prompt.task.dom),
+  project: createPrompt(DOM.prompt.project.dom),
 };
 
 let createEventListeners = () => {
   DOM.header.add.addEventListener('click', function (e) {
     mask.toggle();
-    prompts.taskAdd.toggle();
+    prompts.task.toggle();
     this.classList.toggle('inactive');
   });
-  DOM.prompt.closeBtns.forEach((el) => {
-    el.addEventListener('click', function (e) {
-      mask.toggle();
-      prompts.taskAdd.toggle();
-      DOM.header.add.classList.toggle('inactive');
-    });
+  DOM.prompt.task.btn.close.addEventListener('click', function (e) {
+    mask.toggle();
+    prompts.task.toggle();
+    DOM.header.add.classList.toggle('inactive');
   });
+  DOM.prompt.task.btn.confirm.addEventListener('click', function () {});
 };
 
 export { createEventListeners };

@@ -4,9 +4,14 @@ export default {
     add: document.querySelector('button.btn-add'),
   },
   prompt: {
-    taskAdder: document.querySelector('.prompt.add-task'),
-    closeBtns: document.querySelectorAll('.btn-close'),
-    projectAdder: document.querySelector('.prompt.add-project'),
+    task: {
+      dom: document.querySelector('.prompt.add-task'),
+      btn: {
+        close: document.querySelector('.prompt.add-task .btn-close'),
+        confirm: document.querySelector('.prompt.add-task .btn-confirm'),
+      },
+    },
+    project: { dom: document.querySelector('.prompt.add-project') },
   },
   mask: document.querySelector('.mask'),
 };

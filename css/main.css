@@ -386,3 +386,65 @@ button.add-task {
 
   padding: 5px 10px;
 }
+
+.todos {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.todos > li {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 55px;
+
+  padding: 8px 0;
+  border-radius: 3px;
+
+  transition: all 0.1s ease-in;
+
+  user-select: none;
+}
+
+.todos > li:hover {
+  cursor: pointer;
+}
+
+.circle-check {
+  height: 24px;
+  width: 24px;
+  background-image: url(../img/circle/tabler-icon-circle.svg);
+}
+
+.circle-check:hover {
+  background-image: url(../img/circle/tabler-icon-circle-check.svg);
+}
+
+.circle-check.checked {
+  background-image: url(../img/circle/tabler-icon-circle-check.svg);
+}
+
+/*Levels of priority for todos*/
+.p1 {
+  filter: invert(54%) sepia(10%) saturate(11%) hue-rotate(333deg)
+    brightness(90%) contrast(86%);
+}
+
+.p2 {
+  filter: invert(81%) sepia(43%) saturate(513%) hue-rotate(155deg)
+    brightness(89%) contrast(86%);
+}
+
+.p3 {
+  filter: invert(78%) sepia(62%) saturate(1217%) hue-rotate(329deg)
+    brightness(101%) contrast(102%);
+}
+
+.p4 {
+  /*Most important*/
+  filter: invert(50%) sepia(65%) saturate(5038%) hue-rotate(334deg)
+    brightness(92%) contrast(94%);
+}
