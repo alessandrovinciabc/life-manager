@@ -90,6 +90,8 @@ body {
   background: none;
   outline: none;
   border: none;
+
+  cursor: pointer;
 }
 
 .tooltip {
@@ -341,7 +343,6 @@ body {
     brightness(90%) contrast(86%);
 
   user-select: none;
-  cursor: pointer;
 }
 
 .icon-close:hover {
