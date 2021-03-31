@@ -78,6 +78,12 @@ body {
 
 .btn-header:hover {
   background-color: #ed6a6a;
+  cursor: pointer;
+}
+
+.btn-header.inactive:hover {
+  background-color: unset;
+  cursor: none;
 }
 
 .tooltip {
@@ -104,11 +110,13 @@ body {
   visibility: visible;
 }
 
+.tooltip:hover > .tooltip-text.inactive {
+  visibility: hidden;
+}
+
 .header-icon-menu {
   filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(262deg) brightness(106%)
     contrast(101%);
-
-  cursor: pointer;
 }
 
 .header-icon-logo {
@@ -121,8 +129,6 @@ body {
 .header-icon-plus {
   filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(262deg) brightness(106%)
     contrast(101%);
-
-  cursor: pointer;
 }
 
 /*Main*/
@@ -282,7 +288,7 @@ body {
   visibility: hidden;
 }
 
-button.inactive {
+.btn-add.inactive {
   opacity: 40%;
 }
 
