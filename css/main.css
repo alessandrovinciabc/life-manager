@@ -29,7 +29,7 @@ body {
 /*Header Stuff*/
 .header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 
   height: var(--header-height);
@@ -51,13 +51,19 @@ body {
   width: calc(305px - 42px);
 }
 
+.header-right button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .header-logo {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.btn-menu {
+.btn-header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,7 +76,7 @@ body {
   border-radius: 5px;
 }
 
-.btn-menu:hover {
+.btn-header:hover {
   background-color: #ed6a6a;
 }
 
@@ -91,6 +97,7 @@ body {
   border-radius: 2px;
 
   transition: all 0.05s linear;
+  z-index: 1;
 }
 
 .tooltip:hover > .tooltip-text {
@@ -109,6 +116,13 @@ body {
   height: 32px;
   filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(262deg) brightness(106%)
     contrast(101%);
+}
+
+.header-icon-plus {
+  filter: invert(99%) sepia(0%) saturate(2%) hue-rotate(262deg) brightness(106%)
+    contrast(101%);
+
+  cursor: pointer;
 }
 
 /*Main*/
