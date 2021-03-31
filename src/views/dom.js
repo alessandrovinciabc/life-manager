@@ -5,6 +5,7 @@ export default {
   },
   prompt: {
     taskAdder: document.querySelector('.prompt.add-task'),
+    closeBtns: document.querySelectorAll('.btn-close'),
     projectAdder: document.querySelector('.prompt.add-project'),
   },
   mask: document.querySelector('.mask'),

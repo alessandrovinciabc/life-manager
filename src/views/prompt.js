@@ -31,6 +31,13 @@ let createEventListeners = () => {
     prompts.taskAdd.toggle();
     this.classList.toggle('inactive');
   });
+  DOM.prompt.closeBtns.forEach((el) => {
+    el.addEventListener('click', function (e) {
+      mask.toggle();
+      prompts.taskAdd.toggle();
+      DOM.header.add.classList.toggle('inactive');
+    });
+  });
 };
 
 export { createEventListeners };

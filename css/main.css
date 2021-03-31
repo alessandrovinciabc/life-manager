@@ -86,6 +86,12 @@ body {
   cursor: none;
 }
 
+.btn-close {
+  background: none;
+  outline: none;
+  border: none;
+}
+
 .tooltip {
   position: relative;
 }
