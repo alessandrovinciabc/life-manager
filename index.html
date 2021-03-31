@@ -9,6 +9,29 @@
         <link rel="stylesheet" href="./css/main.css" />
     </head>
     <body>
+        <div class="card add-task prompt">
+            <div class="card-top">
+                <span>Create New Task</span>
+                <img
+                    class="icon-close"
+                    src="./img/tabler-icon-plus.svg"
+                    alt="x icon"
+                />
+            </div>
+            <div class="card-middle">
+                <textarea
+                    name="new-task"
+                    id="new-task"
+                    cols="30"
+                    rows="10"
+                ></textarea>
+            </div>
+            <div class="card-bottom">
+                <button class="add-task inactive">Add task</button>
+            </div>
+        </div>
+        <div class="card add-project prompt inactive"></div>
+        <div class="mask"></div>
         <div class="header">
             <div class="header-main">
                 <button class="btn-menu tooltip">
@@ -32,29 +55,6 @@
             </div>
         </div>
         <div class="main-container">
-            <div class="card add-task prompt">
-                <div class="card-top">
-                    <span>Create New Task</span>
-                    <img
-                        class="icon-close"
-                        src="./img/tabler-icon-plus.svg"
-                        alt="x icon"
-                    />
-                </div>
-                <div class="card-middle">
-                    <textarea
-                        name="new-task"
-                        id="new-task"
-                        cols="30"
-                        rows="10"
-                    ></textarea>
-                </div>
-                <div class="card-bottom">
-                    <button class="add-task inactive">Add task</button>
-                </div>
-            </div>
-            <div class="card add-project prompt inactive"></div>
-            <div class="mask"></div>
             <div class="menu">
                 <ul>
                     <li>
