@@ -1,99 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Life Manager</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Manager</title>
 
-        <link rel="stylesheet" href="./css/main.css" />
-    </head>
-    <body>
-        <div class="card add-task prompt">
-            <div class="card-top">
-                <span>Create New Task</span>
-                <img
-                    class="icon-close"
-                    src="./img/tabler-icon-plus.svg"
-                    alt="x icon"
-                />
-            </div>
-            <div class="card-middle">
-                <textarea
-                    name="new-task"
-                    id="new-task"
-                    cols="30"
-                    rows="10"
-                ></textarea>
-            </div>
-            <div class="card-bottom">
-                <button class="add-task inactive">Add task</button>
-            </div>
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body>
+    <div class="card add-task prompt">
+      <div class="card-top">
+        <span>Create New Task</span>
+        <img class="icon-close" src="./img/tabler-icon-plus.svg" alt="x icon" />
+      </div>
+      <div class="card-middle">
+        <textarea name="new-task" id="new-task" cols="30" rows="10"></textarea>
+      </div>
+      <div class="card-bottom">
+        <button class="add-task inactive">Add task</button>
+      </div>
+    </div>
+    <div class="card add-project prompt inactive"></div>
+    <div class="mask"></div>
+    <div class="header">
+      <div class="header-main">
+        <button class="btn-menu tooltip">
+          <img
+            class="header-icon-menu"
+            src="./img/tabler-icon-menu-2.svg"
+            alt="menu icon"
+          />
+          <span class="tooltip-text"> Open menu </span>
+        </button>
+        <h1>
+          <span class="header-logo">
+            <img
+              class="header-icon-logo"
+              src="./img/tabler-icon-pacman.svg"
+              alt="pacman logo"
+            />
+            Life Manager
+          </span>
+        </h1>
+      </div>
+    </div>
+    <div class="main-container">
+      <div class="menu">
+        <ul>
+          <li>
+            <img
+              class="menu-icon icon-inbox"
+              src="./img/tabler-icon-inbox.svg"
+              alt="inbox icon"
+            />
+            Inbox
+          </li>
+          <li>
+            <img
+              class="menu-icon icon-calendar-number"
+              src="./img/tabler-icon-calendar.svg"
+              alt="calendar with number 1 icon"
+            />Today
+          </li>
+          <li>
+            <img
+              class="menu-icon icon-calendar"
+              src="./img/tabler-icon-calendar-event.svg"
+              alt="calendar icon"
+            />Upcoming
+          </li>
+        </ul>
+        <div class="menu-projects">
+          <img
+            class="icon"
+            src="./img/tabler-icon-chevron-down.svg"
+            alt="down arrow"
+          />
+          <span>Projects</span>
         </div>
-        <div class="card add-project prompt inactive"></div>
-        <div class="mask"></div>
-        <div class="header">
-            <div class="header-main">
-                <button class="btn-menu tooltip">
-                    <img
-                        class="header-icon-menu"
-                        src="./img/tabler-icon-menu-2.svg"
-                        alt="menu icon"
-                    />
-                    <span class="tooltip-text"> Open menu </span>
-                </button>
-                <h1>
-                    <span class="header-logo">
-                        <img
-                            class="header-icon-logo"
-                            src="./img/tabler-icon-pacman.svg"
-                            alt="pacman logo"
-                        />
-                        Life Manager
-                    </span>
-                </h1>
-            </div>
-        </div>
-        <div class="main-container">
-            <div class="menu">
-                <ul>
-                    <li>
-                        <img
-                            class="menu-icon icon-inbox"
-                            src="./img/tabler-icon-inbox.svg"
-                            alt="inbox icon"
-                        />
-                        Inbox
-                    </li>
-                    <li>
-                        <img
-                            class="menu-icon icon-calendar-number"
-                            src="./img/tabler-icon-calendar.svg"
-                            alt="calendar with number 1 icon"
-                        />Today
-                    </li>
-                    <li>
-                        <img
-                            class="menu-icon icon-calendar"
-                            src="./img/tabler-icon-calendar-event.svg"
-                            alt="calendar icon"
-                        />Upcoming
-                    </li>
-                </ul>
-                <div class="menu-projects">
-                    <img
-                        class="icon"
-                        src="./img/tabler-icon-chevron-down.svg"
-                        alt="down arrow"
-                    />
-                    <span>Projects</span>
-                </div>
-            </div>
-            <div class="content">
-                <div class="folder-name">Inbox</div>
-                <div class="folder-content"></div>
-            </div>
-        </div>
-        <script src="./dist/bundle.js"></script>
-    </body>
+      </div>
+      <div class="content">
+        <div class="folder-name">Inbox</div>
+        <div class="folder-content"></div>
+      </div>
+    </div>
+    <script src="./dist/bundle.js"></script>
+  </body>
 </html>

@@ -14,7 +14,7 @@ console.log(getNextOccurrence(testTodo.dueDate));
 
 let todos = [];
 todos.push(
-    createTodo('Do something important', 0, createDate('daymonth', 20, 'may'))
+  createTodo('Do something important', 0, createDate('daymonth', 20, 'may'))
 );
 todos.push(createTodo('Buy new shoes', 0, createDate('daymonth', 30, 'jun')));
 todos.push(createTodo('Do a flip', 0, createDate('full', 31, 'march', 2021)));
