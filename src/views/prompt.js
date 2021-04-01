@@ -1,22 +1,6 @@
 import DOM from './dom.js';
 import mask from './mask.js';
 
-let promptToAddNewTodo = DOM.prompt.task.dom;
-let promptToAddNewProject = DOM.prompt.project.dom;
-
-let togglePromptVisibility = (prompt) => {
-  prompt.classList.toggle('inactive');
-};
-
-let isPromptActive = (prompt) => {
-  let hasInactiveClass = prompt.classList.contains('inactive');
-  if (hasInactiveClass) {
-    return false;
-  } else {
-    return true;
-  }
-};
-
 let turnOnButton = (button) => {
   button.classList.remove('inactive');
 };
@@ -29,63 +13,101 @@ let isButtonDisabled = (button) => {
   return button.classList.contains('inactive');
 };
 
-let openPrompt = (prompt) => {
-  let promptIsNotActive = !isPromptActive(prompt);
-  if (promptIsNotActive) {
-    mask.toggle();
-    togglePromptVisibility(prompt);
-  }
+let createPrompt = (promptDOM) => {
+  let whole, btnForOpening, btnForClosing, btnForConfirming, textInput;
+
+  whole = promptDOM;
+
+  let _togglePromptVisibility = function () {
+    whole.classList.toggle('inactive');
+  };
+
+  let isPromptActive = function () {
+    let hasInactiveClass = this.whole.classList.contains('inactive');
+    if (hasInactiveClass) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  let open = function () {
+    let promptIsNotActive = !this.isPromptActive();
+    if (promptIsNotActive) {
+      mask.toggle();
+      _togglePromptVisibility();
+    }
+  };
+
+  let close = function () {
+    let promptIsActive = this.isPromptActive();
+    if (promptIsActive) {
+      mask.toggle();
+      _togglePromptVisibility();
+    }
+  };
+
+  let getInputValue = function () {
+    return this.textInput.value;
+  };
+
+  let resetInputValue = function () {
+    this.textInput.value = '';
+  };
+
+  let isInputValid = function () {
+    return this.textInput.value.length > 0;
+  };
+
+  return {
+    //fields
+    whole,
+    btnForOpening,
+    btnForClosing,
+    btnForConfirming,
+    textInput,
+    //methods
+    isPromptActive,
+    open,
+    close,
+    isInputValid,
+    getInputValue,
+    resetInputValue,
+  };
 };
 
-let closePrompt = (prompt) => {
-  let promptIsActive = isPromptActive(prompt);
-  if (promptIsActive) {
-    mask.toggle();
-    togglePromptVisibility(prompt);
-  }
-};
+let promptToAddNewTodo = createPrompt(DOM.prompt.task.dom);
+promptToAddNewTodo.btnForOpening = DOM.header.add;
+promptToAddNewTodo.btnForClosing = DOM.prompt.task.btn.close;
+promptToAddNewTodo.btnForConfirming = DOM.prompt.task.btn.confirm;
+promptToAddNewTodo.textInput = DOM.prompt.task.input;
 
-let getInputValue = (inputDOM) => {
-  return inputDOM.value;
-};
-
-let resetInputValue = (inputDOM) => {
-  inputDOM.value = '';
-};
-
-let isInputValid = (inputDOM) => {
-  let result = inputDOM.value.length > 0;
-  return result;
-};
-
-let btnForOpeningPromptToAddNewTodo = DOM.header.add;
-let btnForClosingPromptToAddNewTodo = DOM.prompt.task.btn.close;
-let btnForConfirmingPromptToAddNewTodo = DOM.prompt.task.btn.confirm;
-let textInputOfPromptToAddNewTodo = DOM.prompt.task.input;
+let promptToAddNewProject = createPrompt(DOM.prompt.project.dom);
 
 let initializePrompts = () => {
-  btnForOpeningPromptToAddNewTodo.addEventListener('click', function (e) {
-    openPrompt(promptToAddNewTodo);
+  promptToAddNewTodo.btnForOpening.addEventListener('click', function (e) {
+    promptToAddNewTodo.open();
     turnOffButton(this);
   });
-  btnForClosingPromptToAddNewTodo.addEventListener('click', function (e) {
-    closePrompt(promptToAddNewTodo);
-    resetInputValue(textInputOfPromptToAddNewTodo);
-    turnOnButton(btnForOpeningPromptToAddNewTodo);
+  promptToAddNewTodo.btnForClosing.addEventListener('click', function (e) {
+    promptToAddNewTodo.close();
+    promptToAddNewTodo.resetInputValue();
+    turnOnButton(promptToAddNewTodo.btnForOpening);
+    turnOffButton(promptToAddNewTodo.btnForConfirming);
   });
-  btnForConfirmingPromptToAddNewTodo.addEventListener('click', function (e) {
+  promptToAddNewTodo.btnForConfirming.addEventListener('click', function (e) {
     let buttonIsNotDisabled = !isButtonDisabled(this);
     if (buttonIsNotDisabled) {
-      let textForNewTodo = getInputValue(textInputOfPromptToAddNewTodo);
+      let textForNewTodo = promptToAddNewTodo.getInputValue();
       console.log(textForNewTodo);
     }
   });
-  textInputOfPromptToAddNewTodo.addEventListener('input', function (e) {
-    let inputIsValid = isInputValid(textInputOfPromptToAddNewTodo);
+  promptToAddNewTodo.textInput.addEventListener('input', function (e) {
+    let inputIsValid = promptToAddNewTodo.isInputValid();
     if (inputIsValid) {
-      turnOnButton(btnForConfirmingPromptToAddNewTodo);
+      turnOnButton(promptToAddNewTodo.btnForConfirming);
     } else {
-      turnOffButton(btnForConfirmingPromptToAddNewTodo);
+      turnOffButton(promptToAddNewTodo.btnForConfirming);
     }
   });
 };
