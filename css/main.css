@@ -417,13 +417,19 @@ button.add-task {
   height: 24px;
   width: 24px;
   background-image: url(../img/circle/tabler-icon-circle.svg);
+
+  cursor: pointer;
 }
 
 .circle-check:hover {
   background-image: url(../img/circle/tabler-icon-circle-check.svg);
 }
 
-.circle-check.checked {
+.todo-checkbox {
+  display: none;
+}
+
+.todo-checkbox:checked + label > .circle-check {
   background-image: url(../img/circle/tabler-icon-circle-check.svg);
 }
 
