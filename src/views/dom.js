@@ -15,6 +15,6 @@ export default {
     project: { dom: document.querySelector('.prompt.add-project') },
   },
   listTitle: document.querySelector('.folder-name'),
-  todos: document.querySelector('.folder-content'),
+  todosDisplay: document.querySelector('.folder-content'),
   mask: document.querySelector('.mask'),
 };

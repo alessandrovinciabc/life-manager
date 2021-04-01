@@ -111,7 +111,7 @@ body {
   border-radius: 2px;
 
   transition: all 0.05s linear;
-  z-index: 1;
+  z-index: 2;
 }
 
 .tooltip:hover > .tooltip-text {
@@ -264,6 +264,8 @@ body {
 
   border-bottom: 1px solid #e6e6e6;
   background-color: white;
+
+  z-index: 1;
 }
 
 .folder-content {
@@ -280,7 +282,7 @@ body {
   height: 100vh;
 
   background-color: rgb(0, 0, 0, 0.4);
-  z-index: 1;
+  z-index: 2;
 }
 
 .prompt {
@@ -289,7 +291,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  z-index: 2;
+  z-index: 3;
 }
 
 .mask.inactive {
@@ -408,6 +410,7 @@ button.add-task.inactive {
 
   padding: 8px 0;
   border-radius: 3px;
+  border-bottom: 1px solid #e6e6e6;
 
   transition: all 0.1s ease-in;
 

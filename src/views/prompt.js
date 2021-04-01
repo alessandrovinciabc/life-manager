@@ -1,6 +1,8 @@
 import DOM from './dom.js';
 import mask from './mask.js';
 
+import { createTodoHTML, addTodoToDisplay } from './todo-display.js';
+
 let turnOnButton = (button) => {
   button.classList.remove('inactive');
 };
@@ -99,7 +101,8 @@ let initializePrompts = () => {
     let buttonIsNotDisabled = !isButtonDisabled(this);
     if (buttonIsNotDisabled) {
       let textForNewTodo = promptToAddNewTodo.getInputValue();
-      console.log(textForNewTodo);
+      let newTodoHTML = createTodoHTML(1, textForNewTodo);
+      addTodoToDisplay(newTodoHTML);
     }
   });
   promptToAddNewTodo.textInput.addEventListener('input', function (e) {
