@@ -8,9 +8,9 @@ import { areEqual, getNextOccurrence } from './models/time/date-util.js';
 
 import { createTodoCalendar } from './models/todo/todo-calendar.js';
 
-import { createEventListeners } from './views/prompt.js';
+import { initializePrompts } from './views/prompt.js';
 
-createEventListeners();
+initializePrompts();
 
 // let testTodo = createTodo('Eat an apple');
 // testTodo.dueDate = createDate('day', 7);
