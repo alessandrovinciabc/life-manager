@@ -67,6 +67,9 @@ let createTodoCalendar = () => {
 
   return Object.assign({
     project: {
+      add(project) {
+        _projects.push(project);
+      },
       create(title, color) {
         let newProject = createProject(title, color);
 

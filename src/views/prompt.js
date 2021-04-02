@@ -84,7 +84,25 @@ promptToAddNewTodo.btnForClosing = DOM.prompt.task.btn.close;
 promptToAddNewTodo.btnForConfirming = DOM.prompt.task.btn.confirm;
 promptToAddNewTodo.textInput = DOM.prompt.task.input;
 
+//Additional stuff
+promptToAddNewTodo.dateInput = DOM.prompt.task.dateInput;
+
+promptToAddNewTodo.priorityBtn = DOM.prompt.task.btn.priority;
+promptToAddNewTodo.priorityInput = DOM.prompt.task.priorityInput;
+
 let promptToAddNewProject = createPrompt(DOM.prompt.project.dom);
+
+let getPriorityLevel = () => {
+  let checkedCheckbox = promptToAddNewTodo.priorityInput.querySelector(
+    'input[type="radio"]:checked'
+  );
+
+  if (checkedCheckbox) {
+    return +checkedCheckbox.getAttribute('id').slice(1);
+  } else {
+    return 1;
+  }
+};
 
 let initializePrompts = () => {
   promptToAddNewTodo.btnForOpening.addEventListener('click', function (e) {
@@ -100,9 +118,26 @@ let initializePrompts = () => {
   promptToAddNewTodo.btnForConfirming.addEventListener('click', function (e) {
     let buttonIsNotDisabled = !isButtonDisabled(this);
     if (buttonIsNotDisabled) {
-      let textForNewTodo = promptToAddNewTodo.getInputValue();
-      let newTodoHTML = createTodoHTML(1, textForNewTodo);
-      addTodoToDisplay(newTodoHTML);
+      let textForNewTodo, priorityLevel, date, newTodoHTML, customEvent;
+
+      textForNewTodo = promptToAddNewTodo.getInputValue();
+      priorityLevel = getPriorityLevel();
+      date = promptToAddNewTodo.dateInput.value || 0;
+
+      customEvent = new CustomEvent('taskadded', {
+        detail: {
+          title: textForNewTodo,
+          priority: priorityLevel,
+          dueDate: date,
+        },
+      });
+
+      document.dispatchEvent(customEvent);
+
+      promptToAddNewTodo.close();
+      promptToAddNewTodo.resetInputValue();
+      turnOnButton(promptToAddNewTodo.btnForOpening);
+      turnOffButton(promptToAddNewTodo.btnForConfirming);
     }
   });
   promptToAddNewTodo.textInput.addEventListener('input', function (e) {

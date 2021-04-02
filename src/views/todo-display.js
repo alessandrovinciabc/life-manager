@@ -18,8 +18,31 @@ let createTodoHTML = (id, text, priority = 1) => {
   return newTodo;
 };
 
-let addTodoToDisplay = (todoInHTML, list = defaultList) => {
-  list.insertAdjacentHTML('beforeend', todoInHTML);
+let addTodoToDisplay = (todo, list = defaultList) => {
+  list.insertAdjacentHTML(
+    'beforeend',
+    createTodoHTML(todo.id, todo.title, todo.priority + 1)
+  );
 };
 
-export { createTodoHTML, addTodoToDisplay };
+let removeTodoFromDisplay = (todoId) => {
+  let todoToRemove = defaultList.querySelector(`#todo${todoId}`).parentNode;
+  todoToRemove.remove();
+};
+
+let initializeTodos = () => {
+  defaultList.addEventListener('change', function (e) {
+    let idOfTodoThatWasChecked = e.target.id.slice(4);
+    let customEvent = new CustomEvent('todochecked', {
+      detail: idOfTodoThatWasChecked,
+    });
+    document.dispatchEvent(customEvent);
+  });
+};
+
+export {
+  createTodoHTML,
+  addTodoToDisplay,
+  removeTodoFromDisplay,
+  initializeTodos,
+};

@@ -393,42 +393,10 @@ button.add-task.inactive {
   background-color: #ed6a6a;
 }
 
-label[for='date-picker'] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+input[type='date'] {
   position: absolute;
   right: 60px;
   bottom: 60px;
-
-  width: 24px;
-  height: 24px;
-
-  border-radius: 5px;
-
-  cursor: pointer;
-}
-
-input[type='date'] {
-  position: absolute;
-  right: 89px;
-  bottom: 60px;
-}
-
-.date-picker-icon {
-  height: 24px;
-  width: 24px;
-  background-image: url(../img/tabler-icon-calendar-event.svg);
-  filter: invert(54%) sepia(10%) saturate(11%) hue-rotate(333deg)
-    brightness(90%) contrast(86%);
-
-  border-radius: 5px;
-}
-
-.date-picker-icon:hover {
-  filter: invert(2%) sepia(25%) saturate(339%) hue-rotate(314deg)
-    brightness(102%) contrast(84%);
-  background-color: rgb(0, 0, 0, 0.1);
 }
 
 .priority-picker-btn {

@@ -9,33 +9,47 @@ import { areEqual, getNextOccurrence } from './models/time/date-util.js';
 import { createTodoCalendar } from './models/todo/todo-calendar.js';
 
 import { initializePrompts } from './views/prompt.js';
+import {
+  addTodoToDisplay,
+  removeTodoFromDisplay,
+  initializeTodos,
+} from './views/todo-display.js';
 
 initializePrompts();
+initializeTodos();
 
-// let testTodo = createTodo('Eat an apple');
-// testTodo.dueDate = createDate('day', 7);
-// console.log(getNextOccurrence(testTodo.dueDate));
+let todoCalendar = createTodoCalendar();
+let currentYear = getToday().value.year;
+todoCalendar.refresh(currentYear);
 
-// let todos = [];
-// todos.push(
-//   createTodo('Do something important', 0, createDate('daymonth', 20, 'may'))
-// );
-// todos.push(createTodo('Buy new shoes', 0, createDate('daymonth', 30, 'jun')));
-// todos.push(createTodo('Do a flip', 0, createDate('full', 31, 'march', 2021)));
+let inbox = todoCalendar.project.create('inbox', 'red');
 
-// let calendar = createTodoCalendar();
-// let proj = calendar.project.create('Inbox', 'red');
-// let proj2 = calendar.project.create('Lifestyle', 'green');
+//temporary default todos
 
-// let label = proj.label.add('Health');
-// let label2 = proj2.label.add('Shopping');
+document.addEventListener('taskadded', function (e) {
+  let title, priority, dueDate, newTodo, native;
+  title = e.detail.title;
+  priority = e.detail.priority;
+  dueDate = e.detail.dueDate;
 
-// proj.todo.add(testTodo, label);
-// proj.todo.add(todos[0]);
+  if (dueDate) {
+    native = new Date(dueDate);
+    dueDate = createDate(
+      'full',
+      native.getDate(),
+      native.getMonth(),
+      native.getFullYear()
+    );
+  }
 
-// proj2.todo.add(todos[1]);
-// proj2.todo.add(todos[2], label2);
-// calendar.refresh(getToday().value.year);
-// console.log(calendar.get());
+  newTodo = createTodo(title, priority - 1, dueDate);
+  addTodoToDisplay(newTodo);
 
-//document.body.innerText = `${testTodo.id}\n${testTodo.title}\n${testTodo.priority}\n${testTodo.dueDate.value}\n${testTodo.checked}`;
+  inbox.todo.add(newTodo);
+});
+
+document.addEventListener('todochecked', function (e) {
+  let idToDelete = e.detail;
+  inbox.todo.remove(idToDelete);
+  removeTodoFromDisplay(idToDelete);
+});
