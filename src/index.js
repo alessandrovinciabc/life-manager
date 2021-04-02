@@ -12,6 +12,7 @@ import { initializePrompts } from './views/prompt.js';
 import {
   addTodoToDisplay,
   removeTodoFromDisplay,
+  displayAllTodos,
   initializeTodos,
 } from './views/todo-display.js';
 
@@ -25,6 +26,12 @@ todoCalendar.refresh(currentYear);
 let inbox = todoCalendar.project.create('inbox', 'red');
 
 //temporary default todos
+inbox.todo.add(createTodo('Eat an apple', 3));
+inbox.todo.add(createTodo('Workout', 2));
+inbox.todo.add(createTodo('Study', 1));
+inbox.todo.add(createTodo('Sleep', 0));
+
+displayAllTodos(inbox.todo.getAll());
 
 document.addEventListener('taskadded', function (e) {
   let title, priority, dueDate, newTodo, native;

@@ -30,6 +30,12 @@ let removeTodoFromDisplay = (todoId) => {
   todoToRemove.remove();
 };
 
+let displayAllTodos = (arrayOfTodos) => {
+  arrayOfTodos.forEach((el) => {
+    addTodoToDisplay(el);
+  });
+};
+
 let initializeTodos = () => {
   defaultList.addEventListener('change', function (e) {
     let idOfTodoThatWasChecked = e.target.id.slice(4);
@@ -44,5 +50,6 @@ export {
   createTodoHTML,
   addTodoToDisplay,
   removeTodoFromDisplay,
+  displayAllTodos,
   initializeTodos,
 };
