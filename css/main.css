@@ -536,6 +536,7 @@ button.add-task.inactive {
 .todos > li {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   width: 100%;
   height: 55px;
@@ -643,6 +644,14 @@ button.add-task.inactive {
   left: 0;
   width: 150px;
   height: 24px;
+}
+
+.todo-date-display {
+  margin-left: auto;
+}
+
+input[type='number'] {
+  width: 2rem;
 }
 
 .soft-d-none {

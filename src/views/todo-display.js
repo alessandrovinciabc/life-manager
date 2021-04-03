@@ -6,7 +6,7 @@ let display = DOM.todosDisplay;
 let defaultList = display.querySelector('.todos');
 
 const todoTemplateInHTML =
-  '<li><input class="todo-checkbox" type="checkbox" name="todo%todoId%" id="todo%todoId%" autocomplete="off"/><label for="todo%todoId%"><div class="circle-check p%todoPriority%"></div></label><span class="todo-text">%todoText%</span><div class="edit-stuff vis-hidden "><input type="text" autocomplete="off" minlength="1"/><input type="date" autocomplete="off" /><input type="number" min="1" max="4"/><button class="confirm-edit">Confirm</button><button class="cancel-edit">Cancel</button></div><button class="edit-btn"></button><span class="d-none todo-date">%todoDueDate%</span><span class="d-none todo-priority-n">%todoPriority%</span></li>';
+  '<li><input class="todo-checkbox" type="checkbox" name="todo%todoId%" id="todo%todoId%" autocomplete="off"/><label for="todo%todoId%"><div class="circle-check p%todoPriority%"></div></label><span class="todo-text">%todoText%</span><span class="todo-date-display">%todoDueDate%</span><div class="edit-stuff vis-hidden "><input type="text" autocomplete="off" minlength="1"/><input type="date" autocomplete="off" /><input type="number" min="1" max="4"/><button class="confirm-edit">Confirm</button><button class="cancel-edit">Cancel</button></div><button class="edit-btn"></button><span class="d-none todo-date">%todoDueDate%</span><span class="d-none todo-priority-n">%todoPriority%</span></li>';
 
 let createTodoHTML = (id, text, priority = 1, date = 0) => {
   let template, newTodo;
@@ -16,7 +16,11 @@ let createTodoHTML = (id, text, priority = 1, date = 0) => {
   newTodo = template.replace(/%todoId%/g, id);
   newTodo = newTodo.replace(/%todoText%/g, text);
   newTodo = newTodo.replace(/%todoPriority%/g, priority);
-  newTodo = newTodo.replace(/%todoDueDate%/g, date);
+  if (date === 0) {
+    newTodo = newTodo.replace(/%todoDueDate%/g, '');
+  } else {
+    newTodo = newTodo.replace(/%todoDueDate%/g, date);
+  }
 
   return newTodo;
 };
