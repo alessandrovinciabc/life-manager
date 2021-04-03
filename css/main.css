@@ -613,6 +613,7 @@ button.add-task.inactive {
 }
 
 .projects-display li {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -627,6 +628,20 @@ button.add-task.inactive {
 
 .delete-project {
   width: 24px;
+  height: 24px;
+}
+
+.edit-project {
+  width: 70px;
+  height: 24px;
+
+  font-size: 10px;
+}
+
+.input-project-edit {
+  position: absolute;
+  left: 0;
+  width: 150px;
   height: 24px;
 }
 

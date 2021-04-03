@@ -122,3 +122,17 @@ document.addEventListener('projectdeleted', function (e) {
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
 });
+
+document.addEventListener('projectchanged', function (e) {
+  let id, newTitle;
+
+  id = e.detail.id;
+  newTitle = e.detail.newTitle;
+
+  if (newTitle.length > 0) {
+    todoCalendar.project.get(id).title = newTitle;
+  }
+
+  resetProjectDisplay();
+  displayAllProjects(getProjectsToDisplay());
+});

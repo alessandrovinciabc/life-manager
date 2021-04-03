@@ -8,7 +8,7 @@ inputForProjectName = DOM.newProjectText;
 confirmButton = DOM.confirmProjectBtn;
 
 const projectListItemTemplate =
-  '<li data-id="%projectId%" data-title="%projectTitle%">%projectTitle%<button class="delete-project">X</button></li>';
+  '<li data-id="%projectId%" data-title="%projectTitle%">%projectTitle%<span><input class="input-project-edit soft-d-none" type="text" autocomplete="off"/><button class="edit-project">Toggle Edit</button><button class="delete-project">X</button></span></li>';
 
 let getNewProjectInput = () => {
   return inputForProjectName.value;
@@ -60,10 +60,32 @@ let initializeProjects = () => {
   });
   list.addEventListener('click', function (e) {
     if (e.target.classList.contains('delete-project')) {
-      let idToDelete = e.target.parentNode.dataset.id;
+      let idToDelete = e.target.parentNode.parentNode.dataset.id;
       document.dispatchEvent(
         new CustomEvent('projectdeleted', { detail: idToDelete })
       );
+    } else if (e.target.classList.contains('edit-project')) {
+      let listItem, currentTitle, textInputDOM;
+
+      listItem = e.target.parentNode.parentNode;
+      currentTitle = listItem.dataset.title;
+      textInputDOM = listItem.querySelector('input[type="text"]');
+
+      if (!textInputDOM.classList.contains('soft-d-none')) {
+        let newTitle, idOfProjectToChange;
+        idOfProjectToChange = listItem.dataset.id;
+        newTitle = textInputDOM.value;
+
+        document.dispatchEvent(
+          new CustomEvent('projectchanged', {
+            detail: { id: idOfProjectToChange, newTitle: newTitle },
+          })
+        );
+      } else {
+        textInputDOM.value = currentTitle;
+      }
+
+      textInputDOM.classList.toggle('soft-d-none');
     }
   });
 };
