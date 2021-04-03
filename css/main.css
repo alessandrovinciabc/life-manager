@@ -393,7 +393,7 @@ button.add-task.inactive {
   background-color: #ed6a6a;
 }
 
-input[type='date'] {
+#date-picker {
   position: absolute;
   right: 60px;
   bottom: 60px;
@@ -590,6 +590,22 @@ input[type='date'] {
   /*Most important*/
   filter: invert(50%) sepia(65%) saturate(5038%) hue-rotate(334deg)
     brightness(92%) contrast(94%);
+}
+
+.edit-btn {
+  height: 24px;
+  width: 24px;
+
+  background-image: url(../img/tabler-icon-pencil.svg);
+  background-repeat: none;
+  background-position: center;
+  background-size: 24px;
+}
+
+.edit-stuff {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
 }
 
 .d-none {

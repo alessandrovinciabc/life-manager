@@ -14,6 +14,7 @@ import {
   removeTodoFromDisplay,
   displayAllTodos,
   initializeTodos,
+  removeAllTodosFromDisplay,
 } from './views/todo-display.js';
 
 initializePrompts();
@@ -44,7 +45,7 @@ document.addEventListener('taskadded', function (e) {
     dueDate = createDate(
       'full',
       native.getDate(),
-      native.getMonth(),
+      native.getMonth() + 1,
       native.getFullYear()
     );
   }
@@ -59,4 +60,29 @@ document.addEventListener('todochecked', function (e) {
   let idToDelete = e.detail;
   inbox.todo.remove(idToDelete);
   removeTodoFromDisplay(idToDelete);
+});
+
+document.addEventListener('todochanged', function (e) {
+  let idOfTodoToChange = e.detail.id;
+  let { title: newTitle, dueDate: newDate, priority: newPriority } = e.detail;
+  let todoToChange, native;
+
+  todoToChange = inbox.todo.get(idOfTodoToChange);
+  todoToChange.title = newTitle;
+
+  if (newDate) {
+    native = new Date(newDate);
+    newDate = createDate(
+      'full',
+      native.getDate(),
+      native.getMonth() + 1,
+      native.getFullYear()
+    );
+  }
+
+  todoToChange.dueDate = newDate;
+  todoToChange.priority = newPriority - 1;
+
+  removeAllTodosFromDisplay();
+  displayAllTodos(inbox.todo.getAll());
 });
