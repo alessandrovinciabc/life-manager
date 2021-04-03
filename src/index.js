@@ -17,8 +17,11 @@ import {
   removeAllTodosFromDisplay,
 } from './views/todo-display.js';
 
+import { initializeMenu } from './views/menu.js';
+
 initializePrompts();
 initializeTodos();
+initializeMenu();
 
 let todoCalendar = createTodoCalendar();
 let currentYear = getToday().value.year;

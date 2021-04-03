@@ -142,6 +142,8 @@ body {
 /*Main*/
 .main-container {
   display: flex;
+  justify-content: center;
+
   height: calc(100% - var(--header-height));
 }
 
@@ -609,11 +611,11 @@ button.add-task.inactive {
 }
 
 .d-none {
-  display: none;
+  display: none !important;
 }
 
 .vis-hidden {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
 .zero-space {

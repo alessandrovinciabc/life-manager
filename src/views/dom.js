@@ -17,6 +17,7 @@ export default {
     },
     project: { dom: document.querySelector('.prompt.add-project') },
   },
+  sideMenu: document.querySelector('.menu'),
   listTitle: document.querySelector('.folder-name'),
   todosDisplay: document.querySelector('.folder-content'),
   mask: document.querySelector('.mask'),
