@@ -14,6 +14,7 @@ import {
   removeTodoFromDisplay,
   displayAllTodos,
   initializeTodos,
+  changeFolderName,
   removeAllTodosFromDisplay,
 } from './views/todo-display.js';
 
@@ -34,7 +35,7 @@ let todoCalendar = createTodoCalendar();
 let currentYear = getToday().value.year;
 todoCalendar.refresh(currentYear);
 
-let inbox = todoCalendar.project.create('inbox', 'red');
+let inbox = todoCalendar.project.create('Inbox', 'red');
 let demoProject = todoCalendar.project.create('demo', 'red');
 
 let currentList = inbox;
@@ -44,6 +45,8 @@ inbox.todo.add(createTodo('Eat an apple', 3));
 inbox.todo.add(createTodo('Workout', 2));
 inbox.todo.add(createTodo('Study', 1));
 inbox.todo.add(createTodo('Sleep', 0));
+
+demoProject.todo.add(createTodo('Do something for the demo', 3));
 
 let getProjectsToDisplay = () => {
   return todoCalendar.project.getAll().slice(1); //All except inbox
@@ -135,4 +138,23 @@ document.addEventListener('projectchanged', function (e) {
 
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
+});
+
+document.addEventListener('projectswitch', function (e) {
+  let id, projectObject, title;
+  id = e.detail;
+
+  if (id === 0) {
+    //inbox
+    id = inbox.id;
+  }
+
+  projectObject = todoCalendar.project.get(id);
+  title = projectObject.title;
+
+  changeFolderName(title);
+  currentList = projectObject;
+
+  removeAllTodosFromDisplay();
+  displayAllTodos(currentList.todo.getAll());
 });

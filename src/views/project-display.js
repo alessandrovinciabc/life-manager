@@ -86,8 +86,24 @@ let initializeProjects = () => {
       }
 
       textInputDOM.classList.toggle('soft-d-none');
+    } else if (e.target.dataset.id) {
+      let idOfProjectThatWasClicked;
+
+      idOfProjectThatWasClicked = e.target.dataset.id;
+
+      document.dispatchEvent(
+        new CustomEvent('projectswitch', { detail: idOfProjectThatWasClicked })
+      );
     }
   });
+  document
+    .querySelector('.icon-inbox')
+    .parentNode.addEventListener('click', function (e) {
+      document.dispatchEvent(new CustomEvent('projectswitch', { detail: 0 }));
+    });
+  document
+    .querySelector('.icon-calendar-number')
+    .addEventListener('click', function (e) {});
 };
 
 export { initializeProjects, displayAllProjects, resetProjectDisplay };
