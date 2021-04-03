@@ -8,7 +8,7 @@ inputForProjectName = DOM.newProjectText;
 confirmButton = DOM.confirmProjectBtn;
 
 const projectListItemTemplate =
-  '<li data-id="%projectId%" data-title="%projectTitle%">%projectTitle%</li>';
+  '<li data-id="%projectId%" data-title="%projectTitle%">%projectTitle%<button class="delete-project">X</button></li>';
 
 let getNewProjectInput = () => {
   return inputForProjectName.value;
@@ -55,6 +55,14 @@ let initializeProjects = () => {
       resetNewProjectInput();
       document.dispatchEvent(
         new CustomEvent('projectadded', { detail: newProjectTitle })
+      );
+    }
+  });
+  list.addEventListener('click', function (e) {
+    if (e.target.classList.contains('delete-project')) {
+      let idToDelete = e.target.parentNode.dataset.id;
+      document.dispatchEvent(
+        new CustomEvent('projectdeleted', { detail: idToDelete })
       );
     }
   });

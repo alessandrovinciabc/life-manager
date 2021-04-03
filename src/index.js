@@ -45,8 +45,12 @@ inbox.todo.add(createTodo('Workout', 2));
 inbox.todo.add(createTodo('Study', 1));
 inbox.todo.add(createTodo('Sleep', 0));
 
+let getProjectsToDisplay = () => {
+  return todoCalendar.project.getAll().slice(1); //All except inbox
+};
+
 displayAllTodos(currentList.todo.getAll());
-displayAllProjects(todoCalendar.project.getAll().slice(1)); //All except inbox
+displayAllProjects(getProjectsToDisplay());
 
 document.addEventListener('taskadded', function (e) {
   let title, priority, dueDate, newTodo, native;
@@ -107,5 +111,14 @@ document.addEventListener('projectadded', function (e) {
   newProjectTitle = e.detail;
   todoCalendar.project.create(newProjectTitle, 'red');
   resetProjectDisplay();
-  displayAllProjects(todoCalendar.project.getAll().slice(1));
+  displayAllProjects(getProjectsToDisplay());
+});
+
+document.addEventListener('projectdeleted', function (e) {
+  let idOfProjectToDelete;
+  idOfProjectToDelete = e.detail;
+
+  todoCalendar.project.remove(idOfProjectToDelete);
+  resetProjectDisplay();
+  displayAllProjects(getProjectsToDisplay());
 });

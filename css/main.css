@@ -613,13 +613,21 @@ button.add-task.inactive {
 }
 
 .projects-display li {
-  padding-left: 4.8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4.8px;
 }
 
 .add-project {
   display: flex;
   justify-content: center;
   padding: 6px 0 !important;
+}
+
+.delete-project {
+  width: 24px;
+  height: 24px;
 }
 
 .soft-d-none {
