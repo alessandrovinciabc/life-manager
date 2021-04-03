@@ -19,15 +19,25 @@ import {
 
 import { initializeMenu } from './views/menu.js';
 
+import {
+  initializeProjects,
+  displayAllProjects,
+  resetProjectDisplay,
+} from './views/project-display.js';
+
 initializePrompts();
 initializeTodos();
 initializeMenu();
+initializeProjects();
 
 let todoCalendar = createTodoCalendar();
 let currentYear = getToday().value.year;
 todoCalendar.refresh(currentYear);
 
 let inbox = todoCalendar.project.create('inbox', 'red');
+let demoProject = todoCalendar.project.create('demo', 'red');
+
+let currentList = inbox;
 
 //temporary default todos
 inbox.todo.add(createTodo('Eat an apple', 3));
@@ -35,7 +45,8 @@ inbox.todo.add(createTodo('Workout', 2));
 inbox.todo.add(createTodo('Study', 1));
 inbox.todo.add(createTodo('Sleep', 0));
 
-displayAllTodos(inbox.todo.getAll());
+displayAllTodos(currentList.todo.getAll());
+displayAllProjects(todoCalendar.project.getAll().slice(1)); //All except inbox
 
 document.addEventListener('taskadded', function (e) {
   let title, priority, dueDate, newTodo, native;
@@ -56,12 +67,12 @@ document.addEventListener('taskadded', function (e) {
   newTodo = createTodo(title, priority - 1, dueDate);
   addTodoToDisplay(newTodo);
 
-  inbox.todo.add(newTodo);
+  currentList.todo.add(newTodo);
 });
 
 document.addEventListener('todochecked', function (e) {
   let idToDelete = e.detail;
-  inbox.todo.remove(idToDelete);
+  currentList.todo.remove(idToDelete);
   removeTodoFromDisplay(idToDelete);
 });
 
@@ -70,7 +81,7 @@ document.addEventListener('todochanged', function (e) {
   let { title: newTitle, dueDate: newDate, priority: newPriority } = e.detail;
   let todoToChange, native;
 
-  todoToChange = inbox.todo.get(idOfTodoToChange);
+  todoToChange = currentList.todo.get(idOfTodoToChange);
   todoToChange.title = newTitle;
 
   if (newDate) {
@@ -87,5 +98,14 @@ document.addEventListener('todochanged', function (e) {
   todoToChange.priority = newPriority - 1;
 
   removeAllTodosFromDisplay();
-  displayAllTodos(inbox.todo.getAll());
+  displayAllTodos(currentList.todo.getAll());
+});
+
+document.addEventListener('projectadded', function (e) {
+  let newProjectTitle;
+
+  newProjectTitle = e.detail;
+  todoCalendar.project.create(newProjectTitle, 'red');
+  resetProjectDisplay();
+  displayAllProjects(todoCalendar.project.getAll().slice(1));
 });

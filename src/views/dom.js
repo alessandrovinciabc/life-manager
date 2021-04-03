@@ -20,5 +20,8 @@ export default {
   sideMenu: document.querySelector('.menu'),
   listTitle: document.querySelector('.folder-name'),
   todosDisplay: document.querySelector('.folder-content'),
+  projectsDisplay: document.querySelector('.projects-display'),
+  newProjectText: document.querySelector('#add-project-text'),
+  confirmProjectBtn: document.querySelector('.confirm-add-project'),
   mask: document.querySelector('.mask'),
 };

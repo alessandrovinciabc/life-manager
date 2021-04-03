@@ -45,7 +45,7 @@
         <label for="priority-display">
           <div class="priority-picker-btn">
             <div class="priority-icon p1"></div>
-            <div class="priority-picker card d-none">
+            <div class="priority-picker card soft-d-none">
               <ul>
                 <li>
                   <label>
@@ -167,22 +167,19 @@
               alt="calendar with number 1 icon"
             />Today
           </li>
-          <li>
-            <img
-              class="menu-icon icon-calendar"
-              src="./img/tabler-icon-calendar-event.svg"
-              alt="calendar icon"
-            />Upcoming
-          </li>
         </ul>
-        <div class="menu-projects">
-          <img
-            class="icon"
-            src="./img/tabler-icon-chevron-down.svg"
-            alt="down arrow"
+        <div class="add-project">
+          <input
+            type="text"
+            name="add-project-text"
+            id="add-project-text"
+            autocomplete="off"
           />
-          <span>Projects</span>
+          <button class="confirm-add-project">Add Project</button>
         </div>
+        <ul class="projects-display">
+          <!--Projects get inserted here-->
+        </ul>
       </div>
       <div class="content">
         <div class="folder-name">Inbox</div>

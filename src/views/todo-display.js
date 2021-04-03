@@ -63,6 +63,10 @@ let displayAllTodos = (arrayOfTodos) => {
   });
 };
 
+let changeFolderName = (newName) => {
+  DOM.listTitle.innerText = newName;
+};
+
 let initializeTodos = () => {
   defaultList.addEventListener('change', function (e) {
     if (e.target.id.slice(0, 4) === 'todo') {
@@ -125,6 +129,7 @@ let initializeTodos = () => {
 
       editForm.classList.toggle('vis-hidden');
     } else if (e.target.classList.contains('cancel-edit')) {
+      let editForm = e.target.parentNode;
       editForm.classList.toggle('vis-hidden');
     }
   });
@@ -136,5 +141,6 @@ export {
   removeTodoFromDisplay,
   removeAllTodosFromDisplay,
   displayAllTodos,
+  changeFolderName,
   initializeTodos,
 };
