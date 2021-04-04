@@ -1,6 +1,5 @@
 import DOM from './dom.js';
-import { Months } from '../models/time/date.js';
-import { lookupDictionary } from '../models/time/date-util.js';
+import { lightFormat } from 'date-fns';
 
 let display = DOM.todosDisplay;
 let defaultList = display.querySelector('.todos');
@@ -27,22 +26,12 @@ let createTodoHTML = (id, text, priority = 1, date = 0) => {
 
 let addTodoToDisplay = (todo, list = defaultList) => {
   if (todo.dueDate !== 0) {
-    let newMonth = lookupDictionary(todo.dueDate.value.month, Months, 3) + 1;
-    if (newMonth < 10) {
-      newMonth = `0${newMonth}`;
-    }
-    let newDay = todo.dueDate.value.day;
-    if (newDay < 10) {
-      newDay = `0${newDay}`;
-    }
+    let native = new Date(todo.dueDate);
+    let formattedDate = lightFormat(native, 'yyyy-MM-dd');
+
     list.insertAdjacentHTML(
       'beforeend',
-      createTodoHTML(
-        todo.id,
-        todo.title,
-        todo.priority + 1,
-        `${todo.dueDate.value.year}-${newMonth}-${newDay}`
-      )
+      createTodoHTML(todo.id, todo.title, todo.priority + 1, formattedDate)
     );
   } else {
     list.insertAdjacentHTML(

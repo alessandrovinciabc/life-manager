@@ -1,12 +1,9 @@
-import { createTodo, isValidTodo } from './models/todo/todo.js';
-
-//date.js
-import { createDate, isDateValid } from './models/time/date.js';
-
-import { getToday, isToday, getDay } from './models/time/date-util.js';
-import { areEqual, getNextOccurrence } from './models/time/date-util.js';
-
-import { createTodoCalendar } from './models/todo/todo-calendar.js';
+import { createTodo } from './models/todo/todo.js';
+import {
+  createProject,
+  findId,
+  removeTodoFromProject,
+} from './models/todo/project.js';
 
 import { initializePrompts } from './views/prompt.js';
 import {
@@ -31,88 +28,101 @@ initializeTodos();
 initializeMenu();
 initializeProjects();
 
-let todoCalendar = createTodoCalendar();
-let currentYear = getToday().value.year;
-todoCalendar.refresh(currentYear);
+let collectionOfProjects = [];
 
-let inbox = todoCalendar.project.create('Inbox', 'red');
-let demoProject = todoCalendar.project.create('demo', 'red');
+collectionOfProjects.push(createProject('Inbox'));
+collectionOfProjects.push(createProject('Demo'));
 
-let currentList = inbox;
+let currentProjectIndex = 0;
+
+let inbox = collectionOfProjects[0];
+let demo = collectionOfProjects[1];
 
 //temporary default todos
-inbox.todo.add(createTodo('Eat an apple', 3));
-inbox.todo.add(createTodo('Workout', 2));
-inbox.todo.add(createTodo('Study', 1));
-inbox.todo.add(createTodo('Sleep', 0));
+inbox.todos.push(createTodo('Eat an apple', 3));
+inbox.todos.push(createTodo('Workout', 2));
+inbox.todos.push(createTodo('Study', 1));
+inbox.todos.push(createTodo('Sleep', 0));
 
-demoProject.todo.add(createTodo('Do something for the demo', 3));
+demo.todos.push(createTodo('Do something for the demo', 3));
 
-let getProjectsToDisplay = () => {
-  return todoCalendar.project.getAll().slice(1); //All except inbox
+let getAllTodos = () => {
+  let resultingArray = [];
+
+  collectionOfProjects.forEach((project) => {
+    project.todos.forEach((todo) => {
+      resultingArray.push(todo);
+    });
+  });
+
+  return resultingArray;
 };
 
-displayAllTodos(currentList.todo.getAll());
+let getProjectsToDisplay = () => {
+  return collectionOfProjects.slice(1); //All except inbox
+};
+
+displayAllTodos(collectionOfProjects[currentProjectIndex].todos);
 displayAllProjects(getProjectsToDisplay());
 
 document.addEventListener('taskadded', function (e) {
-  let title, priority, dueDate, newTodo, native;
+  let title, priority, dueDate, newTodo;
   title = e.detail.title;
   priority = e.detail.priority;
   dueDate = e.detail.dueDate;
 
   if (dueDate) {
-    native = new Date(dueDate);
-    dueDate = createDate(
-      'full',
-      native.getDate(),
-      native.getMonth() + 1,
-      native.getFullYear()
-    );
+    dueDate = new Date(dueDate);
   }
 
   newTodo = createTodo(title, priority - 1, dueDate);
   addTodoToDisplay(newTodo);
 
-  currentList.todo.add(newTodo);
+  collectionOfProjects[currentProjectIndex].todos.push(newTodo);
 });
 
 document.addEventListener('todochecked', function (e) {
   let idToDelete = e.detail;
-  currentList.todo.remove(idToDelete);
+
+  removeTodoFromProject(
+    idToDelete,
+    collectionOfProjects[currentProjectIndex].todos
+  );
   removeTodoFromDisplay(idToDelete);
 });
 
 document.addEventListener('todochanged', function (e) {
   let idOfTodoToChange = e.detail.id;
   let { title: newTitle, dueDate: newDate, priority: newPriority } = e.detail;
-  let todoToChange, native;
+  let todoToChange;
 
-  todoToChange = currentList.todo.get(idOfTodoToChange);
-  todoToChange.title = newTitle;
+  todoToChange = findId(
+    idOfTodoToChange,
+    collectionOfProjects[currentProjectIndex].todos
+  );
+  collectionOfProjects[currentProjectIndex].todos[
+    todoToChange
+  ].title = newTitle;
 
   if (newDate) {
-    native = new Date(newDate);
-    newDate = createDate(
-      'full',
-      native.getDate(),
-      native.getMonth() + 1,
-      native.getFullYear()
-    );
+    newDate = new Date(newDate);
   }
 
-  todoToChange.dueDate = newDate;
-  todoToChange.priority = newPriority - 1;
+  collectionOfProjects[currentProjectIndex].todos[
+    todoToChange
+  ].dueDate = newDate;
+  collectionOfProjects[currentProjectIndex].todos[todoToChange].priority =
+    newPriority - 1;
 
   removeAllTodosFromDisplay();
-  displayAllTodos(currentList.todo.getAll());
+  displayAllTodos(collectionOfProjects[currentProjectIndex].todos);
 });
 
 document.addEventListener('projectadded', function (e) {
   let newProjectTitle;
 
   newProjectTitle = e.detail;
-  todoCalendar.project.create(newProjectTitle, 'red');
+  collectionOfProjects.push(createProject(newProjectTitle));
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
 });
@@ -121,7 +131,11 @@ document.addEventListener('projectdeleted', function (e) {
   let idOfProjectToDelete;
   idOfProjectToDelete = e.detail;
 
-  todoCalendar.project.remove(idOfProjectToDelete);
+  let indexToDelete = findId(idOfProjectToDelete, collectionOfProjects);
+  if (indexToDelete !== -1) {
+    collectionOfProjects.splice(indexToDelete, 1);
+  }
+
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
 });
@@ -133,7 +147,10 @@ document.addEventListener('projectchanged', function (e) {
   newTitle = e.detail.newTitle;
 
   if (newTitle.length > 0) {
-    todoCalendar.project.get(id).title = newTitle;
+    let indexToChange = findId(id, collectionOfProjects);
+    if (indexToChange !== -1) {
+      collectionOfProjects[indexToChange].title = newTitle;
+    }
   }
 
   resetProjectDisplay();
@@ -149,24 +166,23 @@ document.addEventListener('projectswitch', function (e) {
     id = inbox.id;
   }
 
-  projectObject = todoCalendar.project.get(id);
+  let newIndex = findId(id, collectionOfProjects);
+
+  projectObject = collectionOfProjects[newIndex];
+
   title = projectObject.title;
 
   changeFolderName(title);
-  currentList = projectObject;
+  currentProjectIndex = newIndex;
 
   removeAllTodosFromDisplay();
-  displayAllTodos(currentList.todo.getAll());
+  displayAllTodos(collectionOfProjects[currentProjectIndex].todos);
 });
 
 document.addEventListener('todayrequested', function (e) {
-  let today = getToday();
-  let day, month, year;
-
-  day = today.value.day;
-  month = today.value.month;
-  year = today.value.year;
+  let today = new Date();
 
   changeFolderName('Today');
   removeAllTodosFromDisplay();
+  displayAllTodos(getAllTodos());
 });

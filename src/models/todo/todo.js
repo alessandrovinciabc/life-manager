@@ -1,118 +1,53 @@
 import { generateId } from '../id.js';
-import { isDateValid } from '../time/date.js';
+import { isValid } from 'date-fns';
 
-//dueDate = 0 means there's no date to the todo
-let createTodo = (title, priority = 0, dueDate = 0) => {
-  //Private
-  let _id, _title, _priority, _dueDate, _checked, _notes;
+let createTodo = (newTitle, newPriority = 0, newDueDate = 0) => {
+  let id, title, priority, dueDate;
   const TITLE_LIMIT = 100;
-  const NOTE_LIMIT = 1024;
-
-  let _validateNote = (newNote) => {
-    if (typeof newNote === 'string' && newNote.length <= NOTE_LIMIT) {
-      _notes = newNote;
-    } else {
-      throw `Error: must assign a string that has a maximum of ${NOTE_LIMIT} characters as the 'notes' section for a todo.`;
-    }
-  };
 
   let _validateTitle = (newTitle) => {
     if (typeof newTitle === 'string' && newTitle.length <= TITLE_LIMIT) {
-      _title = newTitle;
+      return true;
     } else {
-      throw `Error: must assign a string that has a maximum of ${TITLE_LIMIT} characters as the title for a todo.`;
-    }
-  };
-
-  let _validatePriority = (newPriority) => {
-    if (
-      typeof newPriority === 'number' &&
-      newPriority >= 0 &&
-      newPriority <= 3
-    ) {
-      _priority = newPriority;
-    } else {
-      throw 'Error: must assign a number between 0 and 3 as the priority value for a todo.';
+      return false;
     }
   };
 
   let _validateDueDate = (newDate) => {
-    if (isDateValid(newDate) || newDate === 0) {
-      _dueDate = newDate;
+    if (isValid(newDate) || newDate === 0) {
+      return true;
     } else {
-      throw 'Invalid date for todo.';
+      return false;
     }
   };
 
-  _id = generateId();
-  _validateTitle(title);
-  _validatePriority(priority);
-  _validateDueDate(dueDate);
-  _checked = false;
-  _notes = '';
+  let _validatePriority = (newPriority) => {
+    let isANumber, isInCorrectRange, maxForRange, minForRange;
 
-  //Public
-  return Object.assign(
-    {
-      //id
-      get id() {
-        return _id;
-      },
+    minForRange = 0;
+    maxForRange = 3;
 
-      //Title
-      get title() {
-        return _title;
-      },
-      set title(newTitle) {
-        _validateTitle(newTitle);
-      },
+    isANumber = typeof newPriority === 'number';
+    isInCorrectRange = newPriority >= minForRange && newPriority <= maxForRange;
 
-      //Priority
-      get priority() {
-        return _priority;
-      },
-      set priority(newPriority) {
-        _validatePriority(newPriority);
-      },
+    if (isANumber && isInCorrectRange) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
-      //Due date
-      get dueDate() {
-        return _dueDate;
-      },
-      set dueDate(newDate) {
-        _validateDueDate(newDate);
-      },
+  id = generateId();
+  title = _validateTitle(newTitle) ? newTitle : ' ';
+  dueDate = _validateDueDate(newDueDate) ? newDueDate : 0;
+  priority = _validatePriority(newPriority) ? newPriority : 0;
 
-      //Checked
-      get checked() {
-        return _checked;
-      },
-      toggleCheck() {
-        _checked = _checked === false ? true : false;
-        return _checked;
-      },
-
-      //Notes
-      get notes() {
-        return _notes;
-      },
-
-      set notes(newNote) {
-        _validateNote(newNote);
-      },
-    },
-    {}
-  );
+  return {
+    id,
+    title,
+    dueDate,
+    priority,
+  };
 };
 
-let isValidTodo = (obj) => {
-  let result = true;
-  try {
-    createTodo(obj.title, obj.priority, obj.dueDate);
-  } catch (err) {
-    result = false;
-  }
-  return result;
-};
-
-export { createTodo, isValidTodo };
+export { createTodo };
