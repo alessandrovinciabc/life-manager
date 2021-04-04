@@ -539,7 +539,8 @@ button.add-task.inactive {
   flex-wrap: wrap;
 
   width: 100%;
-  height: 55px;
+  min-height: 55px;
+  max-height: fit-content;
 
   padding: 8px 0;
   border-radius: 3px;
@@ -619,6 +620,11 @@ button.add-task.inactive {
   align-items: center;
   justify-content: space-between;
   padding: 0 4.8px;
+}
+
+.projects-display li span {
+  display: flex;
+  align-items: center;
 }
 
 .add-project {

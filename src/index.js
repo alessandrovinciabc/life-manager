@@ -23,6 +23,8 @@ import {
   resetProjectDisplay,
 } from './views/project-display.js';
 
+import { isToday } from 'date-fns';
+
 initializePrompts();
 initializeTodos();
 initializeMenu();
@@ -56,6 +58,14 @@ let getAllTodos = () => {
   });
 
   return resultingArray;
+};
+
+let getTodosForToday = () => {
+  let allTodos = getAllTodos();
+
+  return allTodos.filter((todo) => {
+    return todo.dueDate !== 0 && isToday(todo.dueDate);
+  });
 };
 
 let getProjectsToDisplay = () => {
@@ -184,5 +194,5 @@ document.addEventListener('todayrequested', function (e) {
 
   changeFolderName('Today');
   removeAllTodosFromDisplay();
-  displayAllTodos(getAllTodos());
+  displayAllTodos(getTodosForToday());
 });
