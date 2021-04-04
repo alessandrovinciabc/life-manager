@@ -25,28 +25,16 @@ import {
 
 import { isToday } from 'date-fns';
 
-initializePrompts();
-initializeTodos();
-initializeMenu();
-initializeProjects();
+import storage from './models/storage.js';
 
-let collectionOfProjects = [];
+let collectionOfProjects = [],
+  currentProjectIndex = 0;
 
-collectionOfProjects.push(createProject('Inbox'));
-collectionOfProjects.push(createProject('Demo'));
-
-let currentProjectIndex = 0;
-
-let inbox = collectionOfProjects[0];
-let demo = collectionOfProjects[1];
-
-//temporary default todos
-inbox.todos.push(createTodo('Eat an apple', 3));
-inbox.todos.push(createTodo('Workout', 2));
-inbox.todos.push(createTodo('Study', 1));
-inbox.todos.push(createTodo('Sleep', 0));
-
-demo.todos.push(createTodo('Do something for the demo', 3));
+if (storage.hasData()) {
+  collectionOfProjects = storage.getCollection();
+} else {
+  collectionOfProjects.push(createProject('Inbox'));
+}
 
 let getAllTodos = () => {
   let resultingArray = [];
@@ -64,7 +52,7 @@ let getTodosForToday = () => {
   let allTodos = getAllTodos();
 
   return allTodos.filter((todo) => {
-    return todo.dueDate !== 0 && isToday(todo.dueDate);
+    return todo.dueDate !== 0 && isToday(new Date(todo.dueDate));
   });
 };
 
@@ -72,9 +60,17 @@ let getProjectsToDisplay = () => {
   return collectionOfProjects.slice(1); //All except inbox
 };
 
-displayAllTodos(collectionOfProjects[currentProjectIndex].todos);
-displayAllProjects(getProjectsToDisplay());
+let init = () => {
+  initializePrompts();
+  initializeTodos();
+  initializeMenu();
+  initializeProjects();
 
+  displayAllTodos(collectionOfProjects[currentProjectIndex].todos);
+  displayAllProjects(getProjectsToDisplay());
+};
+
+//Handle FrontEnd Events
 document.addEventListener('taskadded', function (e) {
   let title, priority, dueDate, newTodo;
   title = e.detail.title;
@@ -89,6 +85,7 @@ document.addEventListener('taskadded', function (e) {
   addTodoToDisplay(newTodo);
 
   collectionOfProjects[currentProjectIndex].todos.push(newTodo);
+  storage.saveCollection(collectionOfProjects);
 });
 
 document.addEventListener('todochecked', function (e) {
@@ -98,7 +95,10 @@ document.addEventListener('todochecked', function (e) {
     idToDelete,
     collectionOfProjects[currentProjectIndex].todos
   );
+
   removeTodoFromDisplay(idToDelete);
+
+  storage.saveCollection(collectionOfProjects);
 });
 
 document.addEventListener('todochanged', function (e) {
@@ -126,6 +126,7 @@ document.addEventListener('todochanged', function (e) {
 
   removeAllTodosFromDisplay();
   displayAllTodos(collectionOfProjects[currentProjectIndex].todos);
+  storage.saveCollection(collectionOfProjects);
 });
 
 document.addEventListener('projectadded', function (e) {
@@ -135,6 +136,7 @@ document.addEventListener('projectadded', function (e) {
   collectionOfProjects.push(createProject(newProjectTitle));
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
+  storage.saveCollection(collectionOfProjects);
 });
 
 document.addEventListener('projectdeleted', function (e) {
@@ -148,6 +150,7 @@ document.addEventListener('projectdeleted', function (e) {
 
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
+  storage.saveCollection(collectionOfProjects);
 });
 
 document.addEventListener('projectchanged', function (e) {
@@ -165,6 +168,7 @@ document.addEventListener('projectchanged', function (e) {
 
   resetProjectDisplay();
   displayAllProjects(getProjectsToDisplay());
+  storage.saveCollection(collectionOfProjects);
 });
 
 document.addEventListener('projectswitch', function (e) {
@@ -173,7 +177,7 @@ document.addEventListener('projectswitch', function (e) {
 
   if (id === 0) {
     //inbox
-    id = inbox.id;
+    id = collectionOfProjects[0].id;
   }
 
   let newIndex = findId(id, collectionOfProjects);
@@ -196,3 +200,5 @@ document.addEventListener('todayrequested', function (e) {
   removeAllTodosFromDisplay();
   displayAllTodos(getTodosForToday());
 });
+
+init();
