@@ -59,6 +59,7 @@ let initializeProjects = () => {
     }
   });
   list.addEventListener('click', function (e) {
+    document.querySelector('.btn-header.btn-add').classList.remove('d-none');
     if (e.target.classList.contains('delete-project')) {
       let idToDelete = e.target.parentNode.parentNode.dataset.id;
       document.dispatchEvent(
@@ -99,11 +100,17 @@ let initializeProjects = () => {
   document
     .querySelector('.icon-inbox')
     .parentNode.addEventListener('click', function (e) {
+      document.querySelector('.btn-header.btn-add').classList.remove('d-none');
       document.dispatchEvent(new CustomEvent('projectswitch', { detail: 0 }));
     });
   document
     .querySelector('.icon-calendar-number')
-    .addEventListener('click', function (e) {});
+    .parentNode.addEventListener('click', function (e) {
+      let btnToDisable = document.querySelector('.btn-header.btn-add');
+      btnToDisable.classList.add('d-none');
+
+      document.dispatchEvent(new CustomEvent('todayrequested'));
+    });
 };
 
 export { initializeProjects, displayAllProjects, resetProjectDisplay };

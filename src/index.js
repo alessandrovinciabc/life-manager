@@ -158,3 +158,15 @@ document.addEventListener('projectswitch', function (e) {
   removeAllTodosFromDisplay();
   displayAllTodos(currentList.todo.getAll());
 });
+
+document.addEventListener('todayrequested', function (e) {
+  let today = getToday();
+  let day, month, year;
+
+  day = today.value.day;
+  month = today.value.month;
+  year = today.value.year;
+
+  changeFolderName('Today');
+  removeAllTodosFromDisplay();
+});
